@@ -1,0 +1,19 @@
+<div class="Header bg-white shadow-sm border-b border-gray-200">
+  <!-- Breadcrumbs & Fare Banner -->
+  <div class="HeaderOne bg-slate-50 px-4 md:px-8 py-3 text-xs md:text-sm text-gray-600 border-b border-gray-200">
+    <p class="mb-1">
+      <a routerLink="/" class="hover:text-red-600 hover:underline">Home</a> &gt; 
+      <span>Bus Tickets</span> &gt; 
+      <span class="font-medium text-gray-800">{{ departure || 'Origin' }} Bus</span> &gt; 
+      <span class="font-medium text-gray-800">{{ departure || 'Origin' }} to {{ arrival || 'Destination' }}</span>
+    </p>
+    <p class="text-green-600 font-semibold">Fare Starts from INR 100</p>
+  </div>
+
+  <!-- Route & Date Title Header -->
+  <div class="HeaderTwo px-4 md:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <h3 class="text-lg md:text-xl font-bold text-gray-800">
+      Departure to {{ arrival || 'Destination' }} on {{ date || 'Selected Date' }}
+    </h3>
+  </div>
+</div>

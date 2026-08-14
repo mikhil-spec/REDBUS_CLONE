@@ -1,0 +1,83 @@
+<!-- Empty State -->
+<div *ngIf="!booking || booking.length === 0" class="empty-trips-container">
+  <mat-icon class="empty-icon">directions_bus</mat-icon>
+  <h3 class="text-lg font-bold text-gray-700">No Bookings Found</h3>
+  <p class="text-sm text-gray-500">You haven't booked any bus trips yet.</p>
+</div>
+
+<!-- Trip Cards List -->
+<div class="SingleTrip" *ngFor="let item of booking; let i = index">
+  <div class="SingleTrip__image">
+    <img [src]="getBusImage(i) || randomimage" alt="Bus Image" />
+  </div>
+
+  <div class="SingleTrip__detailsContainer">
+    <!-- Bus & Journey Details -->
+    <div class="SingleTrip__busdetails">
+      <div class="heading">Bus Details</div>
+      <p>
+        <span class="material-icons text-red-500">radio_button_checked</span> 
+        <strong>Departure Location:</strong> {{ item?.departureDetails?.city || 'N/A' }}
+      </p>
+      <p>
+        <span class="material-icons text-red-500">radio_button_checked</span> 
+        <strong>Departure Time:</strong> {{ item?.departureDetails?.time }}:00 hrs
+      </p>
+      <p>
+        <span class="material-icons text-red-500">radio_button_checked</span> 
+        <strong>Departure Date:</strong> {{ item?.departureDetails?.date || 'N/A' }}
+      </p>
+      <p>
+        <span class="material-icons text-red-500">radio_button_checked</span> 
+        <strong>Arrival Location:</strong> {{ item?.arrivalDetails?.city || 'N/A' }}
+      </p>
+      <p>
+        <span class="material-icons text-red-500">radio_button_checked</span> 
+        <strong>Arrival Time:</strong> {{ item?.arrivalDetails?.time }}:00 hrs
+      </p>
+      <p>
+        <span class="material-icons text-red-500">radio_button_checked</span> 
+        <strong>Arrival Date:</strong> {{ item?.arrivalDetails?.date || 'N/A' }}
+      </p>
+      <p class="fare-tag">
+        <span class="material-icons text-green-600">payments</span> 
+        <strong>Total Fare:</strong> Rs. {{ item?.fare }}
+      </p>
+    </div>
+
+    <!-- Passenger & Contact Details -->
+    <div class="SingleTrip__persondetails">
+      <div class="heading">Passenger & Contact Details</div>
+      <p>
+        <span class="material-icons text-blue-500">email</span> 
+        <strong>Contact Email:</strong> {{ item?.email }}
+      </p>
+      <p>
+        <span class="material-icons text-blue-500">phone</span> 
+        <strong>Contact Phone:</strong> {{ item?.phoneNumber }}
+      </p>
+      <p>
+        <span class="material-icons text-blue-500">event_seat</span> 
+        <strong>Seats Booked:</strong> {{ item?.seats?.join(', ') || 'N/A' }}
+      </p>
+
+      <div class="passenger-list-container">
+        <div class="sub-heading">Passengers:</div>
+        <div class="passenger-card" *ngFor="let passenger of item?.passengerDetails">
+          <p>
+            <span class="material-icons">person</span> 
+            <strong>Name:</strong> {{ passenger?.name }}
+          </p>
+          <p>
+            <span class="material-icons">wc</span> 
+            <strong>Gender:</strong> {{ passenger?.gender }}
+          </p>
+          <p>
+            <span class="material-icons">cake</span> 
+            <strong>Age:</strong> {{ passenger?.age }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<div class="left bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+  
+  <!-- Filters Group: Live Tracking & Reschedule -->
+  <div class="left_filters mb-6">
+    <p class="font-bold text-gray-800 text-sm tracking-wider uppercase mb-3">Filters</p>
+    <ul class="space-y-2">
+      <li 
+        (click)="handleLiveTrackingClick()"
+        class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-slate-50 cursor-pointer transition-colors">
+        <div class="first-section flex items-center gap-3">
+          <mat-icon class="text-gray-500">gps_fixed</mat-icon>
+          <span class="text-sm font-medium text-gray-700">Live Tracking</span>
+        </div>
+        <mat-icon *ngIf="sideFilterValues.livetracking" class="text-green-600">check_circle_outline</mat-icon>
+      </li>
+
+      <li 
+        (click)="handleRescheduleClick()"
+        class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-slate-50 cursor-pointer transition-colors">
+        <div class="first-section flex items-center gap-3">
+          <mat-icon class="text-gray-500">restore</mat-icon>
+          <span class="text-sm font-medium text-gray-700">Reschedulable</span>
+        </div>
+        <mat-icon *ngIf="sideFilterValues.reschedulable" class="text-green-600">check_circle_outline</mat-icon>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Departure Time Filter -->
+  <div class="left_filters mb-6">
+    <p class="font-bold text-gray-800 text-sm tracking-wider uppercase mb-3">Departure Time</p>
+    <ul class="space-y-2">
+      <li 
+        *ngFor="let key of getObjectKeys(sideFilterValues.departuretime)" 
+        class="first-section flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer">
+        <input 
+          type="checkbox" 
+          [name]="key" 
+          [checked]="sideFilterValues.departuretime[key]" 
+          (change)="handleDepartureTimeClick($event, key)"
+          class="w-4 h-4 text-red-600 rounded border-gray-300 focus:ring-red-500 cursor-pointer"
+        >
+        <mat-icon class="text-gray-500 text-xl">av_timer</mat-icon>
+        <span class="text-sm text-gray-700 font-medium">{{ key }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Bus Types Filter -->
+  <div class="left_filters mb-6">
+    <p class="font-bold text-gray-800 text-sm tracking-wider uppercase mb-3">Bus Types</p>
+    <ul class="space-y-2">
+      <li 
+        *ngFor="let key of getObjectKeys(sideFilterValues.bustype)" 
+        class="first-section flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer">
+        <input 
+          type="checkbox" 
+          [name]="key" 
+          [checked]="sideFilterValues.bustype[key]" 
+          (change)="handleBusTypeClick($event, key)"
+          class="w-4 h-4 text-red-600 rounded border-gray-300 focus:ring-red-500 cursor-pointer"
+        >
+        <mat-icon class="text-gray-500 text-xl">airline_seat_legroom_extra</mat-icon>
+        <span class="text-sm text-gray-700 font-medium">{{ key }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Arrival Time Filter -->
+  <div class="left_filters mb-6">
+    <p class="font-bold text-gray-800 text-sm tracking-wider uppercase mb-3">Arrival Time</p>
+    <ul class="space-y-2">
+      <li 
+        *ngFor="let key of getObjectKeys(sideFilterValues.arrivaltime)" 
+        class="first-section flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer">
+        <input 
+          type="checkbox" 
+          [name]="key" 
+          [checked]="sideFilterValues.arrivaltime[key]" 
+          (change)="handleArrivalTimeClick($event, key)"
+          class="w-4 h-4 text-red-600 rounded border-gray-300 focus:ring-red-500 cursor-pointer"
+        >
+        <mat-icon class="text-gray-500 text-xl">av_timer</mat-icon>
+        <span class="text-sm text-gray-700 font-medium">{{ key }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Amenities List -->
+  <div class="left_filters">
+    <p class="font-bold text-gray-800 text-sm tracking-wider uppercase mb-3">Amenities</p>
+    <ul class="space-y-2">
+      <li 
+        *ngFor="let key of getObjectKeys(sideFilterValues.amenities)" 
+        class="first-section flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer">
+        <mat-icon class="text-gray-500 text-xl">{{ amenityIcon[key] || 'star' }}</mat-icon>
+        <span class="text-sm text-gray-700 font-medium capitalize">{{ key }}</span>
+      </li>
+    </ul>
+  </div>
+
+</div>

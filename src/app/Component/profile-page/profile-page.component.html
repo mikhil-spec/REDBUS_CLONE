@@ -1,0 +1,103 @@
+<div class="ProfilePannel flex min-h-[calc(100vh-120px)] bg-slate-50">
+  
+  <!-- Left Sidebar Panel -->
+  <div class="leftPart w-full md:w-[20%] lg:w-[15%] bg-white border-r border-gray-200">
+    <ul class="leftPannel p-0 m-0">
+      
+      <!-- Dashboard Header -->
+      <li class="leftPannel_eachListItem flex items-center gap-3 px-6 py-4 border-b border-gray-100">
+        <mat-icon class="text-gray-500">perm_identity</mat-icon>
+        <div class="leftPannel_eachListItem_text font-semibold text-gray-700 text-sm">Dashboard</div>
+      </li>
+
+      <!-- My Trips Tab -->
+      <li 
+        class="leftPannel_eachListOption flex items-center gap-3 px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors border-b border-gray-100"
+        [class.bg-slate-100]="selectedItem === 'trips'"
+        (click)="handleListItemClick('trips')">
+        <i class="material-icons text-gray-500">location_on</i>
+        <div class="leftPannel_eachListItem_text font-semibold text-gray-700 text-sm">My Trips</div>
+      </li>
+
+      <!-- My Profile Tab -->
+      <li 
+        class="leftPannel_eachListOption flex items-center gap-3 px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors border-b border-gray-100"
+        [class.bg-slate-100]="selectedItem === 'profile'"
+        (click)="handleListItemClick('profile')">
+        <i class="material-icons text-gray-500">settings</i>
+        <div class="leftPannel_eachListItem_text font-semibold text-gray-700 text-sm">My Profile</div>
+      </li>
+
+      <!-- Wallet Tab -->
+      <li 
+        class="leftPannel_eachListOption flex items-center gap-3 px-6 py-4 cursor-pointer hover:bg-slate-100 transition-colors border-b border-gray-100"
+        [class.bg-slate-100]="selectedItem === 'wallet'"
+        (click)="handleListItemClick('wallet')">
+        <i class="material-icons text-gray-500">account_balance_wallet</i>
+        <div class="leftPannel_eachListItem_text font-semibold text-gray-700 text-sm">Wallet</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Right Content View -->
+  <div class="rightPannel flex-1 p-6 md:p-10">
+    
+    <!-- My Trips Content -->
+    <div *ngIf="selectedItem === 'trips'">
+      <app-my-trip [booking]="myTrip"></app-my-trip> 
+    </div>
+
+    <!-- Wallet Placeholder -->
+    <div *ngIf="selectedItem === 'wallet'" class="bg-white p-8 rounded-xl border border-gray-200 shadow-sm text-gray-600">
+      <h3 class="text-xl font-bold mb-2">My Wallet</h3>
+      <p class="text-sm">Wallet feature coming soon...</p>
+    </div>
+
+    <!-- My Profile Details Content -->
+    <div *ngIf="selectedItem === 'profile'">
+      <h2 class="profileHeading text-xl font-bold text-gray-700 mb-6">My Profile</h2>
+      
+      <div class="profilebox bg-white p-8 rounded-xl border border-gray-200 shadow-sm max-w-3xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex flex-col gap-1">
+            <span class="userDetailHeading text-xs text-gray-500 uppercase font-semibold">Your Name</span>
+            <span class="userDetailInfo text-base font-bold text-gray-800">{{ currentName || 'User' }}</span>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <span class="userDetailHeading text-xs text-gray-500 uppercase font-semibold">Date of Birth</span>
+            <span class="userDetailInfo text-base font-bold text-gray-800">
+              {{ currentCustomer?.dateOfBirth || currentCustomer?.dateofbirth || 'N/A' }}
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <span class="userDetailHeading text-xs text-gray-500 uppercase font-semibold">Gender</span>
+            <span class="userDetailInfo text-base font-bold text-gray-800">{{ currentCustomer?.gender || '-' }}</span>
+          </div>
+        </div>
+
+        <div class="my-8 border-t border-gray-200 relative flex items-center justify-center">
+          <span class="bg-white px-4 text-xs font-bold text-gray-500 uppercase tracking-wider relative -top-2">
+            Contact Details
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex flex-col gap-1">
+            <span class="userDetailHeading text-xs text-gray-500 uppercase font-semibold">Email</span>
+            <span class="userDetailInfo text-base font-bold text-gray-800">{{ currentEmail || '-' }}</span>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <span class="userDetailHeading text-xs text-gray-500 uppercase font-semibold">Phone Number</span>
+            <span class="userDetailInfo text-base font-bold text-gray-800">
+              {{ currentCustomer?.phoneNumber || currentCustomer?.phone || 'N/A' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

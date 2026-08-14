@@ -1,0 +1,79 @@
+<div class="mainBar flex flex-wrap items-center justify-end gap-2 md:gap-4 py-2 border-t border-gray-100 text-xs md:text-sm">
+  <div 
+    (click)="handleTabState(0)" 
+    [class.text-red-600]="tabState[0]" 
+    class="hover:text-red-600 cursor-pointer font-medium transition-colors">
+    Amenities
+  </div>
+  <span class="text-gray-300">|</span>
+
+  <div 
+    (click)="handleTabState(1)" 
+    [class.text-red-600]="tabState[1]" 
+    class="hover:text-red-600 cursor-pointer font-medium transition-colors">
+    Boarding & Dropping Points
+  </div>
+  <span class="text-gray-300">|</span>
+
+  <div 
+    (click)="handleTabState(2)" 
+    [class.text-red-600]="tabState[2]" 
+    class="hover:text-red-600 cursor-pointer font-medium transition-colors">
+    Reviews
+  </div>
+  <span class="text-gray-300">|</span>
+
+  <div 
+    (click)="handleTabState(3)" 
+    [class.text-red-600]="tabState[3]" 
+    class="hover:text-red-600 cursor-pointer font-medium transition-colors">
+    Booking Policies
+  </div>
+  <span class="text-gray-300">|</span>
+
+  <button 
+    type="button" 
+    (click)="handleTabState(4)" 
+    class="view-seats-btn bg-[#d84e55] hover:bg-[#c03940] text-white px-4 py-1.5 rounded uppercase font-semibold text-xs transition-colors">
+    {{ tabState[4] ? 'HIDE SEATS' : 'VIEW SEATS' }}
+  </button>
+</div>
+
+<!-- Tab Panel Views -->
+<div class="displayArea mt-3" *ngIf="tabState[0]">
+  <div class="p-4 bg-slate-50 rounded-lg border border-gray-200 text-xs md:text-sm text-gray-600">
+    <strong>Available Amenities:</strong> Wi-Fi, Water Bottle, Charging Point, Blankets, Central TV.
+  </div>
+</div>
+
+<div class="displayArea mt-3" *ngIf="tabState[1]">
+  <div class="p-4 bg-slate-50 rounded-lg border border-gray-200 text-xs md:text-sm text-gray-600">
+    <p><strong>Boarding Point:</strong> {{ routeDetails?.departureLocation?.name || 'Origin' }}</p>
+    <p><strong>Dropping Point:</strong> {{ routeDetails?.arrivalLocation?.name || 'Destination' }}</p>
+  </div>
+</div>
+
+<div class="displayArea mt-3" *ngIf="tabState[2]">
+  <div class="p-4 bg-slate-50 rounded-lg border border-gray-200 text-xs md:text-sm text-gray-600">
+    <p><strong>Rating:</strong> 4.5 / 5.0</p>
+    <p>Punctual departure and clean sleeper seats.</p>
+  </div>
+</div>
+
+<div class="displayArea mt-3" *ngIf="tabState[3]">
+  <div class="p-4 bg-slate-50 rounded-lg border border-gray-200 text-xs md:text-sm text-gray-600">
+    <p>Cancellations allowed up to 6 hours before departure. Ticket rescheduling available.</p>
+  </div>
+</div>
+
+<div class="displayArea mt-3" *ngIf="tabState[4]">
+  <app-view-seats 
+    [filledseats]="filledSeats" 
+    [seatprice]="seatPrice" 
+    [routedetails]="routeDetails" 
+    [busid]="busId"
+    [busarrivaltime]="busArrivalTime" 
+    [busdeparturetime]="busDepartureTime" 
+    [operatorname]="operatorName">
+  </app-view-seats>
+</div>

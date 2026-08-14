@@ -1,0 +1,28 @@
+<div class="drawer-wrapper w-full mt-4">
+  <button 
+    type="button" 
+    class="proceedButton bg-[#d84e55] hover:bg-[#c03940] disabled:bg-gray-400 disabled:cursor-not-allowed text-white w-full py-2.5 rounded font-semibold uppercase text-xs tracking-wider transition-colors shadow-sm"
+    [disabled]="selectedSeats.length === 0"
+    (click)="drawer.toggle()">
+    Proceed To Book 
+    <span *ngIf="selectedSeats.length > 0">
+      ({{ selectedSeats.length }} {{ selectedSeats.length === 1 ? 'Seat' : 'Seats' }})
+    </span>
+  </button>
+
+  <mat-drawer-container class="example-container">
+    <mat-drawer #drawer position="end" mode="over" class="example-sidenav">
+      <div class="drawer-content-box w-[90vw] max-w-[600px] p-2">
+        <app-bus-booking-form 
+          [selectedseat]="selectedSeats" 
+          [seatprice]="seatPrice" 
+          [routedetails]="routeDetails"
+          [busid]="busId" 
+          [busarrivaltime]="busArrivalTime" 
+          [busdeparturetime]="busDepartureTime" 
+          [operatorname]="operatorName">
+        </app-bus-booking-form>
+      </div>
+    </mat-drawer>
+  </mat-drawer-container>
+</div>

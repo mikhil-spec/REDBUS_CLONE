@@ -1,0 +1,24 @@
+<div class="main-container inline-flex items-center justify-center p-1">
+  <!-- Booked Seat -->
+  <ng-container *ngIf="alreadyBookedSeats.includes(seatNo); else selectable">
+    <span 
+      class="seat-icon cursor-not-allowed opacity-80" 
+      [title]="'Seat ' + seatNo + ' - Already Booked'">
+      <i class="material-icons text-2xl text-red-600">airline_seat_recline_extra</i>
+    </span>
+  </ng-container>
+
+  <!-- Selectable Seat -->
+  <ng-template #selectable>
+    <span 
+      class="seat-icon cursor-pointer transition-transform hover:scale-110 inline-block" 
+      [title]="'Seat ' + seatNo + (selectedSeats.includes(seatNo) ? ' - Selected' : ' - Available')"
+      (click)="handleSeatBooking(seatNo)">
+      <i 
+        class="material-icons text-2xl" 
+        [style.color]="getColor(seatNo)">
+        airline_seat_recline_extra
+      </i>
+    </span>
+  </ng-template>
+</div>

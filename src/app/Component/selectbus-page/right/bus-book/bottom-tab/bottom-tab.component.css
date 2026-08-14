@@ -1,0 +1,12 @@
+.mainBar {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.displayArea {
+  width: 100%;
+}
+
+.view-seats-btn {
+  letter-spacing: 0.5px;
+}

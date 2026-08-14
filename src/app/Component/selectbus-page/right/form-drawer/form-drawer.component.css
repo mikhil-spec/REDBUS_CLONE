@@ -1,0 +1,18 @@
+.proceedButton {
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.example-container {
+  width: 100%;
+  height: auto;
+  background-color: transparent;
+}
+
+::ng-deep .mat-drawer-container {
+  background-color: transparent;
+}
+
+::ng-deep .mat-drawer-inner-container {
+  overflow-x: hidden;
+}

@@ -1,0 +1,36 @@
+body {
+  font-weight: 400;
+}
+
+.passenger-main-title {
+  font-size: 18px;
+  color: #4a4a4a;
+}
+
+.content-block {
+  background: #ffffff;
+}
+
+.form-input {
+  background: #ffffff;
+  outline: none;
+  font-size: 14px;
+}
+
+.radio-button {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.passenger-contact-msg {
+  color: #333333;
+}
+
+.proceed_to_button {
+  background-color: #d84e55;
+  color: #ffffff;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+}

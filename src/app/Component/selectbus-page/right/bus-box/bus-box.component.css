@@ -1,0 +1,20 @@
+.bus-box {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.busBoxSection15 > div:first-child {
+  background-color: #62c18b;
+}
+
+.busBoxSection17 > div:first-child {
+  height: 4px;
+  width: 64px;
+  border-radius: 2px;
+  background-color: #d84e55;
+}
+
+.busBoxSection3 {
+  min-height: 45px;
+  height: auto;
+}

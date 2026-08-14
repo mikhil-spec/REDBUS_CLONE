@@ -1,0 +1,187 @@
+<div class="payment__fullContainer">
+  <!-- Left Container: Payment Options -->
+  <div class="payment__fullContainer_leftContainer">
+    <input class="payment__fullContainer_rightContainer_inputOfferCOde" placeholder="ENTER OFFER CODE" />
+    
+    <div class="payment__fullContainer_rightContainer_infobar">
+      <div class="banner_chip">
+        <img src="https://s3.rdbuz.com/Images/webplatform/Common/Payment/safe-payments.svg" alt="Safe Payments" />
+        <div class="banner_text">
+          <div>Safe and Secure</div>
+          <div>Online Payments</div>
+        </div>
+      </div>
+      <div class="banner_chip">
+        <img src="https://s3.rdbuz.com/Images/webplatform/Common/Payment/transactions.svg" alt="Transactions" />
+        <div class="banner_text">
+          <div>60+ million</div>
+          <div>transactions</div>
+        </div>
+      </div>
+      <div class="banner_chip">
+        <img src="https://s3.rdbuz.com/Images/webplatform/Common/Payment/trust.svg" alt="Trust" />
+        <div class="banner_text">
+          <div>10+ years of</div>
+          <div>Trust</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment__fullContainer_leftContainer_paymentInstruments">
+      <!-- Stripe Payment Action -->
+      <div class="Payment__stripe">
+        <button type="button" class="Payment__stripe__button" (click)="makePayment()">Pay With Stripe</button>
+      </div>
+
+      <!-- Other Payment Methods -->
+      <div class="choose_payment_heading">Choose Other Payment Method</div>
+      <div class="payment__fullContainer_leftContainer_paymentInstrument">
+        
+        <!-- Credit Card -->
+        <div class="payment__fullContainer_leftContainer_eachPaymentInstruments">
+          <input class="radioButton" type="radio" name="paymentMethod" />
+          <div class="radioButtonText">Credit Card</div>
+          <div class="paymentIconList">
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/mobile/v2/visa.png" alt="Visa" />
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/mobile/v2/mastercard.png" alt="Mastercard" />
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/maestro.png" alt="Maestro" />
+          </div>
+        </div>
+
+        <!-- Debit Card -->
+        <div class="payment__fullContainer_leftContainer_eachPaymentInstruments">
+          <input class="radioButton" type="radio" name="paymentMethod" />
+          <div class="radioButtonText">Debit Card</div>
+          <div class="paymentIconList">
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/mobile/v2/visa.png" alt="Visa" />
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/mobile/v2/mastercard.png" alt="Mastercard" />
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/maestro.png" alt="Maestro" />
+          </div>
+        </div>
+
+        <!-- Wallets -->
+        <div class="payment__fullContainer_leftContainer_eachPaymentInstruments">
+          <input class="radioButton" type="radio" name="paymentMethod" />
+          <div class="radioButtonText">Wallets</div>
+          <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/amazonpay.png" alt="Amazon Pay" />
+        </div>
+
+        <!-- Net Banking -->
+        <div class="payment__fullContainer_leftContainer_eachPaymentInstruments">
+          <input class="radioButton" type="radio" name="paymentMethod" />
+          <div class="radioButtonText">Net Banking</div>
+          <div class="paymentIconList">
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/axis.png" alt="Axis" />
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/sbi.png" alt="SBI" />
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/hdfc.png" alt="HDFC" />
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/icici.png" alt="ICICI" />
+            <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/kotak.png" alt="Kotak" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="UpiPaymentText">
+      UPI PAYMENT USING PHONEPE / GPAY / AMAZONPAY ETC...
+    </div>
+
+    <div class="payment__fullContainer_leftContainer_paymentInstrument">
+      <!-- Pay through QR Code -->
+      <div class="payment__fullContainer_leftContainer_eachPaymentInstruments">
+        <input class="radioButton" type="radio" name="paymentMethod" />
+        <div class="radioButtonText">Pay through QR Code</div>
+        <div class="payment__fullContainer_leftContainer_eachPaymentInstruments_new">New</div>
+        <div class="paymentIconList">
+          <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/upi/gpay.svg" alt="GPay" />
+          <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/upi/phonepe.svg" alt="PhonePe" />
+          <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/upi/amazonpay.svg" alt="Amazon Pay" />
+        </div>
+      </div>
+
+      <!-- Pay through UPI ID -->
+      <div class="payment__fullContainer_leftContainer_eachPaymentInstruments">
+        <input class="radioButton" type="radio" name="paymentMethod" />
+        <div class="radioButtonText">Pay through UPI ID</div>
+        <div class="payment__fullContainer_leftContainer_eachPaymentInstruments_new">New</div>
+        <div class="paymentIconList">
+          <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/upi/gpay.svg" alt="GPay" />
+          <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/upi/phonepe.svg" alt="PhonePe" />
+          <img class="payment_icon_img" src="https://st.redbus.in/paas/images/web/v2/upi/amazonpay.svg" alt="Amazon Pay" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Container: Trip Summary -->
+  <div class="payment__fullContainer_rightContainer">
+    <div class="payment__fullContainer_rightContainer_trip_container">
+      <div class="travel_operator_info">
+        <div class="travel_title">{{ operatorName || 'Bus Operator' }}</div>
+        <div class="travel_specification">Seater / A/C / Sleeper</div>
+      </div>
+
+      <div class="line"></div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; justify-content: space-between; width: 200px;">
+          <mat-icon class="icons">date_range</mat-icon>
+          <div style="display: flex; flex-direction: column;">
+            <div class="travel_specification">Booking Date</div>
+            <div style="display: flex; width: 150px;">
+              <div>{{ bookingDate | date: 'yyyy-MM-dd' }}</div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; margin-right: 10px;">
+          <div class="travel_specification font-bold">Seats Booked</div>
+          <div>{{ passSeatArray.join(', ') || 'None' }}</div>
+        </div>
+      </div>
+
+      <div class="line"></div>
+
+      <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; justify-content: space-between; width: 150px;">
+          <mat-icon class="icons">location_on</mat-icon>
+          <div style="display: flex; flex-direction: column;">
+            <div class="travel_specification">Boarding Point</div>
+            <div class="font-semibold">{{ routeDetails?.departureLocation?.name || 'Origin' }}</div>
+            <div>{{ bookingDate }}</div>
+            <div>{{ busDepartureTime }}:00</div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column;">
+          <div class="travel_specification">Dropping Point</div>
+          <div class="font-semibold">{{ routeDetails?.arrivalLocation?.name || 'Destination' }}</div>
+          <div>{{ bookingDate }}</div>
+          <div>{{ busArrivalTime }}:00</div>
+        </div>
+      </div>
+
+      <div class="passangerInfo">
+        <mat-icon class="icons">account_box</mat-icon>
+        <div class="passangerName">{{ customerId?.name || customerId?.email || 'Passenger' }}</div>
+      </div>
+    </div>
+
+    <!-- Fare Breakup -->
+    <div class="payment__fullContainer_rightContainer_fair_container">
+      <div style="display: flex; justify-content: space-between;">
+        <div class="travel_title">FARE BREAKUP</div>
+        <img src="https://s3.rdbuz.com/Images/webplatform/Common/Payment/down.svg" width="14" height="14" alt="Expand">
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+        <div class="travel_specification" style="font-weight: bold;">Total Payable</div>
+        <div class="travel_specification" style="font-weight: bold;">Rs. {{ passFare }}</div>
+      </div>
+    </div>
+
+    <!-- Trust Badges -->
+    <div style="display: flex; justify-content: space-around; margin-top: 10px; width: 95%;">
+      <img class="payment_banner_icon_img" src="https://s3.rdbuz.com/Images/webplatform/Common/Payment/master-card-secure-code.png" alt="Mastercard SecureCode">
+      <img class="payment_banner_icon_img" src="https://s3.rdbuz.com/Images/webplatform/Common/Payment/verified-by-visa.svg" alt="Verified by Visa">
+      <img class="payment_banner_icon_img" src="https://s3.rdbuz.com/Images/webplatform/Common/Payment/verisign-secured.png" alt="Verisign Secured">
+    </div>
+  </div>
+</div>

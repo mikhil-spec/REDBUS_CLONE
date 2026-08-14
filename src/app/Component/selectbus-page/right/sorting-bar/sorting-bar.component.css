@@ -1,0 +1,20 @@
+.security-container mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.main-container mat-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.main-container2,
+.main-container3,
+.main-container4,
+.main-container5,
+.main-container6,
+.main-container7 {
+  user-select: none;
+}

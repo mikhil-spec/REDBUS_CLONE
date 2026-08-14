@@ -1,0 +1,81 @@
+<!-- Security Banner -->
+<div class="security-container flex items-center gap-2 py-2.5 px-4 text-xs font-semibold text-gray-700 bg-slate-50 border border-gray-100 rounded-lg mb-3">
+  <mat-icon class="text-green-600 text-lg">security</mat-icon>
+  <span>All bus ratings include safety as a major factor</span>
+</div>
+
+<mat-divider></mat-divider>
+
+<!-- Sorting Bar Container -->
+<div class="main-container flex items-center justify-between py-3 px-2 text-xs text-gray-700 bg-white rounded-lg shadow-sm my-2 font-medium overflow-x-auto">
+  <div class="main-container1 flex items-center gap-2 pr-4 flex-shrink-0">
+    <span class="font-bold text-gray-800 text-sm whitespace-nowrap">BUSES LIST</span>
+    <span class="text-gray-400 font-bold whitespace-nowrap">SORT BY :</span>
+  </div>
+
+  <div 
+    class="main-container2 hover:text-red-600 cursor-pointer transition-colors flex items-center gap-1 flex-shrink-0"
+    [class.text-red-600]="activeSortField === 'departure'"
+    [class.font-bold]="activeSortField === 'departure'"
+    (click)="onSort('departure')">
+    <span>Departure</span>
+    <mat-icon *ngIf="activeSortField === 'departure'" class="text-xs font-bold">
+      {{ isAscending ? 'arrow_upward' : 'arrow_downward' }}
+    </mat-icon>
+  </div>
+
+  <div 
+    class="main-container3 hover:text-red-600 cursor-pointer transition-colors flex items-center gap-1 flex-shrink-0"
+    [class.text-red-600]="activeSortField === 'duration'"
+    [class.font-bold]="activeSortField === 'duration'"
+    (click)="onSort('duration')">
+    <span>Duration</span>
+    <mat-icon *ngIf="activeSortField === 'duration'" class="text-xs font-bold">
+      {{ isAscending ? 'arrow_upward' : 'arrow_downward' }}
+    </mat-icon>
+  </div>
+
+  <div 
+    class="main-container4 hover:text-red-600 cursor-pointer transition-colors flex items-center gap-1 flex-shrink-0"
+    [class.text-red-600]="activeSortField === 'arrival'"
+    [class.font-bold]="activeSortField === 'arrival'"
+    (click)="onSort('arrival')">
+    <span>Arrivals</span>
+    <mat-icon *ngIf="activeSortField === 'arrival'" class="text-xs font-bold">
+      {{ isAscending ? 'arrow_upward' : 'arrow_downward' }}
+    </mat-icon>
+  </div>
+
+  <div 
+    class="main-container5 hover:text-red-600 cursor-pointer transition-colors flex items-center gap-1 flex-shrink-0"
+    [class.text-red-600]="activeSortField === 'rating'"
+    [class.font-bold]="activeSortField === 'rating'"
+    (click)="onSort('rating')">
+    <span>Ratings</span>
+    <mat-icon *ngIf="activeSortField === 'rating'" class="text-xs font-bold">
+      {{ isAscending ? 'arrow_upward' : 'arrow_downward' }}
+    </mat-icon>
+  </div>
+
+  <div 
+    class="main-container6 hover:text-red-600 cursor-pointer transition-colors flex items-center gap-1 flex-shrink-0"
+    [class.text-red-600]="activeSortField === 'fare'"
+    [class.font-bold]="activeSortField === 'fare'"
+    (click)="onSort('fare')">
+    <span>Fare</span>
+    <mat-icon *ngIf="activeSortField === 'fare'" class="text-xs font-bold">
+      {{ isAscending ? 'arrow_upward' : 'arrow_downward' }}
+    </mat-icon>
+  </div>
+
+  <div 
+    class="main-container7 hover:text-red-600 cursor-pointer transition-colors flex items-center gap-1 flex-shrink-0"
+    [class.text-red-600]="activeSortField === 'seats'"
+    [class.font-bold]="activeSortField === 'seats'"
+    (click)="onSort('seats')">
+    <span>Seats Available</span>
+    <mat-icon *ngIf="activeSortField === 'seats'" class="text-xs font-bold">
+      {{ isAscending ? 'arrow_upward' : 'arrow_downward' }}
+    </mat-icon>
+  </div>
+</div>

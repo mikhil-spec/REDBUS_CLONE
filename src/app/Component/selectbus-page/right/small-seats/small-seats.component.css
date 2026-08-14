@@ -1,0 +1,10 @@
+.main-container {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat-icon {
+  user-select: none;
+}
