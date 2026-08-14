@@ -6,12 +6,15 @@ import { SelectbusPageComponent } from './Component/selectbus-page/selectbus-pag
 import { PaymentPageComponent } from './Component/payment-page/payment-page.component';
 import { ProfilePageComponent } from './Component/profile-page/profile-page.component';
 
+import { CommunityFeedComponent } from './Component/community/community-feed/community-feed.component';
+
 const routes: Routes = [
   { path: '', component: LandingPageComponent, title: 'Tedbus - Home' },
   { path: 'select-bus', component: SelectbusPageComponent, title: 'Tedbus - Select Bus' },
   { path: 'payment', component: PaymentPageComponent, title: 'Tedbus - Payment' },
   { path: 'profile', component: ProfilePageComponent, title: 'Tedbus - My Profile' },
-  { path: '**', redirectTo: '' },
+  { path: 'community', component: CommunityFeedComponent, title: 'Tedbus - Travelers Community' },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

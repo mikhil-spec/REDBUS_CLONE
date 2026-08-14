@@ -1,0 +1,77 @@
+<div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow mb-4">
+  
+  <!-- Author Header & Verification Badge -->
+  <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-3">
+      <img [src]="post.authorPicture || 'assets/favicon.ico'" alt="Author" class="w-10 h-10 rounded-full border border-gray-200">
+      <div>
+        <div class="flex items-center gap-1.5 font-bold text-gray-800 text-sm">
+          <span>{{ post.authorName }}</span>
+          <mat-icon *ngIf="post.isVerifiedUser" class="text-blue-500 text-base h-4 w-4" matTooltip="Verified Traveler">verified</mat-icon>
+        </div>
+        <span class="text-xs text-gray-400">{{ post.createdAt | date:'mediumDate' }}</span>
+      </div>
+    </div>
+
+    <!-- Category & Route Badges -->
+    <div class="flex items-center gap-2">
+      <span class="bg-red-50 text-red-600 text-xs px-2.5 py-1 rounded-full font-semibold border border-red-100">
+        {{ post.category }}
+      </span>
+      <span *ngIf="post.isFeatured" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded font-bold flex items-center gap-1">
+        <mat-icon class="text-xs h-3 w-3">star</mat-icon> Featured
+      </span>
+    </div>
+  </div>
+
+  <!-- Title & Content -->
+  <h3 class="text-lg font-bold text-gray-800 mb-2">{{ post.title }}</h3>
+  <p class="text-gray-600 text-sm leading-relaxed mb-4">{{ post.content }}</p>
+
+  <!-- Optional Image -->
+  <div *ngIf="post.imageUrl" class="mb-4 rounded-lg overflow-hidden max-h-80">
+    <img [src]="post.imageUrl" alt="Story photo" class="w-full object-cover">
+  </div>
+
+  <!-- Route Tag if present -->
+  <div *ngIf="post.relatedRoute" class="mb-4 text-xs text-slate-500 bg-slate-50 p-2 rounded inline-block font-medium">
+    <i class="fa-solid fa-route mr-1 text-red-500"></i> Route: {{ post.relatedRoute }}
+  </div>
+
+  <!-- Interaction & Action Bar -->
+  <div class="flex items-center justify-between pt-3 border-t border-gray-100 text-xs text-gray-500">
+    
+    <div class="flex items-center gap-4">
+      <!-- Like Button -->
+      <button (click)="onLike()" class="flex items-center gap-1 hover:text-red-600 font-semibold transition-colors" [class.text-red-600]="isLiked">
+        <mat-icon class="text-lg">{{ isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+        <span>{{ post.likes?.length || 0 }} Likes</span>
+      </button>
+
+      <!-- Comments Trigger -->
+      <button (click)="showComments = !showComments" class="flex items-center gap-1 hover:text-blue-600 font-semibold transition-colors">
+        <mat-icon class="text-lg">chat_bubble_outline</mat-icon>
+        <span>{{ post.commentsCount || 0 }} Comments</span>
+      </button>
+    </div>
+
+    <!-- Share & Moderation Menu -->
+    <div class="flex items-center gap-2">
+      <button (click)="shareExternal('whatsapp')" class="hover:text-green-600 p-1" title="Share on WhatsApp">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+      </button>
+      <button (click)="shareExternal('twitter')" class="hover:text-sky-500 p-1" title="Share on Twitter">
+        <i class="fa-brands fa-x-twitter text-lg"></i>
+      </button>
+      <button (click)="shareExternal('copy')" class="hover:text-gray-800 p-1" title="Copy Link">
+        <mat-icon class="text-lg">link</mat-icon>
+      </button>
+      <button (click)="onReport()" class="hover:text-red-500 p-1 ml-2 text-gray-400" title="Report Post">
+        <mat-icon class="text-lg">flag</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Expandable Comment Section Component -->
+  <app-comment-section *ngIf="showComments" [postId]="post._id" [currentUserId]="currentUserId"></app-comment-section>
+</div>
