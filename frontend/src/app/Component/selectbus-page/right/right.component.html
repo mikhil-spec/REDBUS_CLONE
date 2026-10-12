@@ -1,0 +1,18 @@
+<div>
+    <app-sorting-bar></app-sorting-bar>
+    <p *ngIf="matchedbus && matchedbus.length === 0" class="mx-auto mt-6 p-6 text-center text-gray-600 bg-white rounded-lg border border-dashed border-gray-300">
+        {{ "LANDING.NO_BUSES" | translate: { date: date } }}
+    </p>
+    <p *ngIf="matchedbus && matchedbus.length > 0 && visibleBuses.length === 0" class="mx-auto mt-6 p-6 text-center text-gray-600 bg-white rounded-lg border border-dashed border-gray-300">
+        {{ "LANDING.NO_FILTER_MATCH" | translate }}
+    </p>
+    <div *ngFor="let bus of visibleBuses; index as i">
+        <div *ngFor="let key of getkeys()">
+            <div *ngIf="bus._id === key">
+                <app-bus-box [rating]='bus.rating' [busid]="bus._id" [operatorname]="bus.operatorName" [bustype]="bus.busType"
+                    [departuretime]="bus.departureTime" [livetracking]="bus.liveTracking" [reschedulable]="bus.reschedulable" [filledseats]="seats[key]"
+                    [fare]="bus.fare" [totalseats]="bus.totalSeats" [routedetails]="bus.routeDetails"></app-bus-box>
+            </div>
+        </div>
+    </div>
+</div>

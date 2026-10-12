@@ -1,0 +1,70 @@
+<div class="max-w-5xl mx-auto px-4 md:px-0 py-8">
+  <ng-container *ngIf="user; else signedOut">
+    <div class="flex items-center gap-4 mb-6">
+      <img *ngIf="user.avatar" [src]="user.avatar" alt="" class="w-16 h-16 rounded-full object-cover" />
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">{{ user.name }}</h1>
+        <p class="text-sm text-gray-500">{{ user.email }}</p>
+        <span *ngIf="user.isVerified" class="text-xs text-green-700">✔ {{ "ACCOUNT.VERIFIED" | translate }}</span>
+      </div>
+    </div>
+
+    <nav class="flex flex-wrap gap-1 border-b border-gray-200 mb-6">
+      <button *ngFor="let tab of tabs" (click)="selectTab(tab.key)"
+              class="px-4 py-2 -mb-px border-b-2 text-sm"
+              [ngClass]="activeTab === tab.key ? 'border-red-500 text-red-600 font-semibold' : 'border-transparent text-gray-600 hover:text-gray-800'">
+        {{ tab.labelKey | translate }}
+      </button>
+    </nav>
+
+    <app-dashboard *ngIf="activeTab === 'dashboard'"></app-dashboard>
+    <app-trips *ngIf="activeTab === 'trips'"></app-trips>
+    <app-account *ngIf="activeTab === 'profile'"></app-account>
+
+    <section *ngIf="activeTab === 'preferences'" class="space-y-5 max-w-2xl">
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <h2 class="font-semibold text-gray-800">{{ "PROFILE.PREF_THEME" | translate }}</h2>
+        <p class="text-sm text-gray-500 mb-3">{{ "PROFILE.PREF_THEME_DESC" | translate }}</p>
+        <div class="flex gap-2">
+          <button (click)="setTheme(false)" class="px-4 py-2 rounded-lg border text-sm"
+                  [ngClass]="!themeService.isDark() ? 'bg-red-500 text-white border-red-500' : 'border-gray-300 text-gray-700'">
+            {{ "PROFILE.PREF_LIGHT" | translate }}
+          </button>
+          <button (click)="setTheme(true)" class="px-4 py-2 rounded-lg border text-sm"
+                  [ngClass]="themeService.isDark() ? 'bg-red-500 text-white border-red-500' : 'border-gray-300 text-gray-700'">
+            {{ "PROFILE.PREF_DARK" | translate }}
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <h2 class="font-semibold text-gray-800">{{ "PROFILE.PREF_LANGUAGE" | translate }}</h2>
+        <p class="text-sm text-gray-500 mb-3">{{ "PROFILE.PREF_LANGUAGE_DESC" | translate }}</p>
+        <div class="flex flex-wrap gap-2">
+          <button *ngFor="let lang of i18n.availableLanguages" (click)="setLanguage(lang.code)"
+                  class="px-4 py-2 rounded-lg border text-sm"
+                  [ngClass]="i18n.getCurrentLanguage() === lang.code ? 'bg-red-500 text-white border-red-500' : 'border-gray-300 text-gray-700'">
+            {{ lang.nativeLabel }}
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <h2 class="font-semibold text-gray-800">{{ "PROFILE.PREF_ALERTS" | translate }}</h2>
+        <p class="text-sm text-gray-500 mb-3">{{ "PROFILE.PREF_ALERTS_DESC" | translate }}</p>
+        <div class="flex flex-col gap-2">
+          <a routerLink="/notifications" class="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50">{{ "PROFILE.GO_NOTIFICATIONS" | translate }}</a>
+          <a routerLink="/reviews" class="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50">{{ "PROFILE.GO_REVIEWS" | translate }}</a>
+          <a routerLink="/community" class="px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50">{{ "PROFILE.GO_COMMUNITY" | translate }}</a>
+        </div>
+      </div>
+
+      <button (click)="signOut()" class="px-5 py-2 rounded-lg bg-red-500 text-white font-semibold">{{ "PROFILE.SIGN_OUT" | translate }}</button>
+    </section>
+  </ng-container>
+
+  <ng-template #signedOut>
+    <p *ngIf="auth.sessionExpired" class="text-center text-red-700 pt-16">{{ "ACCOUNT.SESSION_EXPIRED" | translate }}</p>
+    <p class="text-center text-gray-600 py-16">{{ "PROFILE.SIGN_IN_PROMPT" | translate }}</p>
+  </ng-template>
+</div>

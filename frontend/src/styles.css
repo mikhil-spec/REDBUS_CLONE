@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Transitions */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Light Theme Defaults */
+body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Dark Theme Palette (Supports both Tailwind .dark and Angular .dark-theme) */
+html.dark body,
+body.dark,
+body.dark-theme {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+/* Cards, Modals, Navbars, & Sidebars */
+body.dark nav,
+body.dark-theme nav,
+body.dark .post-card,
+body.dark-theme .post-card,
+body.dark .rating-summary-card,
+body.dark-theme .rating-summary-card,
+body.dark .review-item-card,
+body.dark-theme .review-item-card,
+body.dark .planner-sidebar,
+body.dark-theme .planner-sidebar,
+body.dark .preferences-card,
+body.dark-theme .preferences-card,
+body.dark .simulator-card,
+body.dark-theme .simulator-card,
+body.dark .modal-container,
+body.dark-theme .modal-container,
+body.dark .modal-box,
+body.dark-theme .modal-box,
+body.dark .bg-white,
+body.dark-theme .bg-white {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+/* Form Controls & Inputs */
+body.dark input,
+body.dark-theme input,
+body.dark select,
+body.dark-theme select,
+body.dark textarea,
+body.dark-theme textarea {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+body.dark input::placeholder,
+body.dark-theme input::placeholder,
+body.dark textarea::placeholder,
+body.dark-theme textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Nested Containers & Action Panels */
+body.dark .location-card,
+body.dark-theme .location-card,
+body.dark .comments-section,
+body.dark-theme .comments-section,
+body.dark .saved-card,
+body.dark-theme .saved-card,
+body.dark .state-card,
+body.dark-theme .state-card,
+body.dark .bus-selector-bar,
+body.dark-theme .bus-selector-bar {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Typography Overrides */
+body.dark .text-gray-500,
+body.dark-theme .text-gray-500,
+body.dark .text-gray-600,
+body.dark-theme .text-gray-600,
+body.dark .text-gray-700,
+body.dark-theme .text-gray-700 {
+  color: #94a3b8 !important;
+}
+
+body.dark .text-gray-800,
+body.dark-theme .text-gray-800,
+body.dark .text-gray-900,
+body.dark-theme .text-gray-900 {
+  color: #f8fafc !important;
+}
+
+/* Leaflet Map Controls in Dark Mode */
+body.dark .leaflet-control-zoom a,
+body.dark-theme .leaflet-control-zoom a {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+body.dark .leaflet-popup-content-wrapper,
+body.dark-theme .leaflet-popup-content-wrapper {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+body.dark .leaflet-popup-tip,
+body.dark-theme .leaflet-popup-tip {
+  background-color: #1e293b !important;
+}

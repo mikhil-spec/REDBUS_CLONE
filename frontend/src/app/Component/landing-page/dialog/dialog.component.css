@@ -1,0 +1,79 @@
+:host {
+  display: block;
+}
+
+.dialog-title {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: inherit;
+}
+
+.dialog-description {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.routes-table {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.col-center {
+  text-align: center;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.bus-badge {
+  display: inline-block;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dialog-actions {
+  padding: 12px 16px;
+}
+
+.btn-close-dialog {
+  font-weight: 600;
+}
+
+/* Dark Mode Overrides */
+body.dark .dialog-description,
+body.dark-theme .dialog-description {
+  color: #94a3b8;
+}
+
+body.dark .routes-table,
+body.dark-theme .routes-table {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+body.dark .routes-table th,
+body.dark-theme .routes-table th {
+  background-color: #0f172a !important;
+  color: #cbd5e1 !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark .routes-table td,
+body.dark-theme .routes-table td {
+  border-bottom-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .bus-badge,
+body.dark-theme .bus-badge {
+  background-color: #7f1d1d !important;
+  color: #fecaca !important;
+}

@@ -1,0 +1,156 @@
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.sorting-wrapper {
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  padding: 4px 16px;
+  margin-bottom: 12px;
+}
+
+.security-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.shield-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #10b981;
+}
+
+.main-container {
+  width: 100%;
+  padding: 10px 0;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: auto;
+  gap: 8px;
+}
+
+.main-container1 {
+  width: 22%;
+  min-width: 140px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buses-list-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.sort-by-label {
+  color: #64748b;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.sort-tab {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  user-select: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.sort-tab:hover {
+  color: #d84e55;
+  background-color: #fee2e2;
+}
+
+.active-sort {
+  color: #d84e55 !important;
+  font-weight: 700 !important;
+  background-color: #fff1f2;
+}
+
+.main-container2,
+.main-container3,
+.main-container5 {
+  width: 10%;
+  min-width: 70px;
+}
+
+.main-container4 {
+  width: 12%;
+  min-width: 80px;
+}
+
+.main-container6 {
+  width: 12%;
+  min-width: 70px;
+}
+
+.main-container7 {
+  width: 16%;
+  min-width: 110px;
+}
+
+/* Dark Mode Overrides (Task 5) */
+body.dark .sorting-wrapper,
+body.dark-theme .sorting-wrapper {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .security-container,
+body.dark-theme .security-container {
+  color: #94a3b8 !important;
+}
+
+body.dark .buses-list-label,
+body.dark-theme .buses-list-label {
+  color: #f8fafc !important;
+}
+
+body.dark .sort-by-label,
+body.dark-theme .sort-by-label {
+  color: #94a3b8 !important;
+}
+
+body.dark .sort-tab,
+body.dark-theme .sort-tab {
+  color: #cbd5e1 !important;
+}
+
+body.dark .sort-tab:hover,
+body.dark-theme .sort-tab:hover {
+  background-color: #334155 !important;
+  color: #f87171 !important;
+}
+
+body.dark .active-sort,
+body.dark-theme .active-sort {
+  color: #f87171 !important;
+  background-color: #450a0a !important;
+}

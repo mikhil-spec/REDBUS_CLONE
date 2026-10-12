@@ -1,0 +1,202 @@
+<nav
+  class="px-4 md:px-8 py-2 flex flex-wrap gap-y-2 text-xs md:text-sm font-normal items-center justify-between sticky top-0 bg-white z-50 shadow-md border-b border-gray-100"
+>
+  <!-- Left side: logo & main navigation tabs -->
+  <div
+    class="flex gap-2 md:gap-8 items-center w-full justify-between md:w-auto md:justify-start min-w-0"
+  >
+    <!-- redBus Logo -->
+    <a routerLink="/" class="grid place-content-center cursor-pointer">
+      <img
+        class="md:w-[4.5rem] md:h-auto w-12 h-10 object-contain"
+        src="../../../assets/red-bus-with-word-bus-it_600323-482.avif"
+        alt="redBus Logo"
+      />
+    </a>
+
+    <div class="h-6 w-[1px] bg-gray-200 hidden md:block"></div>
+
+    <!-- Original core Tabs+ New task links -->
+    <div class="flex items-center gap-1 md:gap-2 overflow-x-auto min-w-0">
+      <!-- 1. Bus Tickets(original) -->
+      <a
+        routerLink="/"
+        class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors"
+      >
+        <svg
+          width="22"
+          height="18"
+          viewBox="0 0 29 20"
+          fill="currentColor"
+          class="text-red-600"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M27.4574 2.53544C26.7324 1.13025 25.8004 0.327283 24.7992 0.217787C15.4095 -0.712926 3.43064 1.49524 0.979642 3.88589C-0.090514 4.9261 -0.28038 7.3715 0.392782 11.3681C0.858818 14.1602 1.58376 16.6604 1.60102 16.7699L1.75637 17.3174L4.74245 16.9706C4.9841 18.6861 6.3822 20 8.07374 20C9.92062 20 11.4396 18.4123 11.4396 16.4414C11.4396 16.3501 11.4396 16.2771 11.4223 16.1859L18.4991 15.3282C18.4991 15.3464 18.4991 15.3829 18.4991 15.4012C18.4991 17.3539 20.0008 18.9598 21.8649 18.9598C23.7118 18.9598 25.2308 17.3721 25.2308 15.4012C25.2308 15.1092 25.1962 14.8172 25.1272 14.5435L28.1478 14.1785L28.3031 13.8317C29.5114 11.2039 29.0971 5.71082 27.4574 2.53544ZM8.07374 18.5948C6.9518 18.5948 6.03699 17.6276 6.03699 16.4414C6.03699 15.2552 6.9518 14.288 8.07374 14.288C9.19568 14.288 10.1105 15.2552 10.1105 16.4414C10.1105 17.6276 9.19568 18.5948 8.07374 18.5948ZM21.8477 17.5728C20.7257 17.5728 19.8109 16.6056 19.8109 15.4194C19.8109 14.2332 20.7257 13.266 21.8477 13.266C22.9696 13.266 23.8844 14.2332 23.8844 15.4194C23.8844 16.6056 22.9696 17.5728 21.8477 17.5728Z"
+          />
+        </svg>
+        <span class="font-medium text-gray-800">{{ "NAV.BUS_TICKETS" | translate }}</span>
+      </a>
+
+      <!-- 2. Route planner (Task 3 feature) -->
+      <a
+        routerLink="/planner"
+        routerLinkActive="bg-red-50 text-red-600 font-semibold"
+        class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors"
+      >
+        <span>🗺️</span>
+        <span>{{ "NAV.ROUTE_PLANNER" | translate }}</span>
+      </a>
+
+      <!-- 3. Travel community (Task 1 Feature) -->
+      <a
+        routerLink="/community"
+        routerLinkActive="bg-red-50 text-red-600 font-semibold"
+        class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors"
+      >
+        <span>👥</span>
+        <span>{{ "NAV.COMMUNITY" | translate }}</span>
+      </a>
+
+      <!-- 4. Route reviews (Task 6 feature) -->
+      <a
+        routerLink="/reviews"
+        routerLinkActive="bg-red-50 text-red-600 font-semibold"
+        class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors"
+      >
+        <span>⭐</span>
+        <span>{{ "NAV.REVIEWS" | translate }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Right Side: language Dropdown, notifications, & user Account -->
+  <div class="flex items-center gap-2 md:gap-4 shrink-0 ml-auto">
+    <!-- Task 4: Dedicated Language selector DropDown -->
+    <div class="relative lang-selector-container">
+      <button
+        type="button"
+        class="lang-pill-btn"
+        (click)="toggleDropdown()"
+        [attr.aria-expanded]="isLangDropdownOpen"
+      >
+        <span class="text-sm">{{ selectedLanguage.flag || "🌐" }}</span>
+        <span class="font-semibold text-gray-800 hidden sm:inline">{{
+          selectedLanguage.nativeLabel || "Language"
+        }}</span>
+        <span class="text-xs text-gray-500">▼</span>
+      </button>
+
+      <!-- language Dropdown menu -->
+      <div *ngIf="isLangDropdownOpen" class="lang-dropdown-box">
+        <div class="dropdown-header">
+          {{ "NAV.SELECT_LANGUAGE" | translate }}
+        </div>
+        <button
+          *ngFor="let lang of languages"
+          type="button"
+          (click)="chooseLanguage(lang)"
+          [class.active-lang-item]="selectedLanguage.code === lang.code"
+          class="lang-option-row"
+        >
+          <span class="text-base">{{ lang.flag }}</span>
+          <div class="flex flex-col text-left">
+            <span class="text-xs font-semibold text-gray-900">{{
+              lang.nativeLabel
+            }}</span>
+            <span class="text-[10px] text-gray-500">{{ lang.label }}</span>
+          </div>
+          <span
+            *ngIf="selectedLanguage.code === lang.code"
+            class="ml-auto text-red-600 font-bold text-xs"
+            >✓</span
+          >
+        </button>
+      </div>
+    </div>
+
+    <!-- theme preference toggle button -->
+    <button 
+      type="button" 
+      (click)="themeService.toggleTheme()" 
+      class="flex items-center justify-center w-9 h-9 rounded-full border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+      [title]="themeService.isDark() ? ('NAV.THEME_TO_LIGHT' | translate) : ('NAV.THEME_TO_DARK' | translate)">
+      <span class="text-base">{{ themeService.isDark() ? '☀️' : '🌙' }}</span>
+    </button>
+
+    <!-- Task 2: Notification bell with Badge -->
+    <a
+      routerLink="/notifications"
+      routerLinkActive="text-red-600"
+      class="relative p-2 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors flex items-center justify-center"
+      [title]="'NAV.NOTIFICATIONS' | translate"
+    >
+      <span class="text-lg">🔔</span>
+      <span
+        *ngIf="unreadCount > 0"
+        class="absolute top-1 right-1 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full"
+      >
+        {{ unreadCount }}
+      </span>
+    </a>
+
+    <!-- Original help Link -->
+    <a
+      routerLink="/" fragment="faq"
+      class="hidden lg:flex items-center gap-1.5 px-2 py-1.5 rounded-lg hover:bg-gray-100 cursor-pointer text-gray-700"
+    >
+      <i class="fa-solid fa-headset text-gray-600 text-lg"></i>
+      <span>{{ "NAV.HELP" | translate }}</span>
+    </a>
+
+    <!-- original Google Auth & Account dropdown -->
+    <div class="google-login-wrap" *ngIf="!isloggedIn && isGoogleConfigured">
+      <div id="google-btn"></div>
+      <small class="text-gray-500 text-xs">{{ "NAV.NEW_TO_REDBUS" | translate }}</small>
+      <div id="google-signup-btn"></div>
+      <small *ngIf="welcomeMessage" class="text-green-700 text-xs max-w-xs">{{ welcomeMessage }}</small>
+      <small *ngIf="authError" class="text-red-600 text-xs max-w-xs">{{ authError }}</small>
+    </div>
+
+    <!-- Shown when no Google client ID is configured, so the sign-in option is never silently missing -->
+    <div class="flex items-center" *ngIf="!isloggedIn && !isGoogleConfigured">
+      <button
+        type="button"
+        class="flex items-center gap-2 h-9 px-2.5 rounded-lg hover:bg-gray-100 text-gray-700"
+        (click)="showSignInNotConfigured()"
+      >
+        <i class="fa-regular fa-user text-gray-600 text-lg"></i>
+        <span class="font-medium hidden sm:inline">{{ "NAV.SIGN_IN" | translate }}</span>
+      </button>
+      <small *ngIf="authError" class="text-red-600 ml-2">{{ authError }}</small>
+    </div>
+
+    <div class="flex items-center" *ngIf="isloggedIn">
+      <button
+        class="flex items-center gap-2 h-9 px-2.5 rounded-lg hover:bg-gray-100 text-gray-700"
+        [matMenuTriggerFor]="menu"
+      >
+        <i class="fa-regular fa-user text-gray-600 text-lg"></i>
+        <span class="font-medium hidden sm:inline">{{ "NAV.ACCOUNT" | translate }}</span>
+        <i class="fa-solid fa-angle-down text-gray-500 text-xs"></i>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <div mat-menu-item disabled class="font-semibold text-gray-800">{{ authService.currentUser?.name }}</div>
+        <button mat-menu-item (click)="navigate('/dashboard')">
+          <i class="fa-solid fa-gauge mr-2"></i>{{ "NAV.DASHBOARD" | translate }}
+        </button>
+        <button mat-menu-item (click)="navigate('/account')">
+          <i class="fa-regular fa-id-card mr-2"></i>{{ "NAV.ACCOUNT_DETAILS" | translate }}
+        </button>
+        <button mat-menu-item (click)="navigate('/profile')">
+          <i class="fa-solid fa-user-gear mr-2"></i>{{ "NAV.MY_PROFILE" | translate }}
+        </button>
+        <button mat-menu-item (click)="handlelogout()">
+          <i class="fa-solid fa-right-from-bracket mr-2"></i>{{ "NAV.SIGN_OUT" | translate }}
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</nav>

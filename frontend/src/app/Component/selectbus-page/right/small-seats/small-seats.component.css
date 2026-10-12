@@ -1,0 +1,67 @@
+:host {
+  display: inline-block;
+}
+
+.seat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  user-select: none;
+  width: 38px;
+  height: 44px;
+}
+
+.seat-container:hover:not(.seat-booked) {
+  transform: scale(1.12);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.seat-booked {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.seat-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.seat-number-label {
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 2px;
+  color: #64748b;
+}
+
+.seat-available {
+  color: #475569;
+}
+
+.seat-selected .seat-number-label {
+  color: #10b981;
+}
+
+.seat-booked .seat-number-label {
+  color: #ef4444;
+}
+
+/* Dark Mode Overrides (Task 5) */
+body.dark .seat-available,
+body.dark-theme .seat-available {
+  color: #cbd5e1 !important;
+}
+
+body.dark .seat-available .seat-number-label,
+body.dark-theme .seat-available .seat-number-label {
+  color: #94a3b8 !important;
+}
+
+body.dark .seat-container:hover:not(.seat-booked),
+body.dark-theme .seat-container:hover:not(.seat-booked) {
+  background-color: rgba(255, 255, 255, 0.08);
+}

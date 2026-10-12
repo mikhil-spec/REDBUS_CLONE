@@ -1,0 +1,261 @@
+<div class="community-wrapper">
+    <!-- top notify toast -->
+     <div *ngIf="notificationMessage" class="toast-alert">
+        <span>{{ notificationMessage }}</span>
+     </div>
+
+     <!-- header banner -->
+      <header class="community-hero">
+        <div class="hero-content">
+            <div class="badge-tag">{{ "COMMUNITY.HERO_TAG" | translate }}</div>
+            <h1 class="hero-title">{{ "COMMUNITY.TITLE" | translate }}</h1>
+            <p class="hero-subtitle">
+                {{ "COMMUNITY.SUBTITLE" | translate }}
+            </p>
+
+            <div class="hero-actions">
+                <button class="btn-primary" (click)="openCreateModal()">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>    
+                    {{ "COMMUNITY.SHARE_BTN" | translate }}
+                </button>
+            </div>
+        </div>
+      </header>
+
+      <!-- feed Controls & topic filters -->
+       <section class="feed-controls">
+        <div class="topic-scroll">
+            <button *ngFor="let topic of topics" [class.active]="activeTopic === topic" (click)="setTopic(topic)" class="topic-pill">
+                {{ topicLabel(topic) }}
+            </button>
+        </div>
+
+        <div class="community-search">
+            <input [(ngModel)]="searchCity" (keyup.enter)="loadPosts()" type="search" [placeholder]="'COMMUNITY.SEARCH_PLACEHOLDER' | translate" [attr.aria-label]="'COMMUNITY.SEARCH_PLACEHOLDER' | translate" />
+            <button type="button" class="btn-sort" (click)="loadPosts()">{{ "COMMUNITY.SEARCH_BTN" | translate }}</button>
+        </div>
+
+        <div class="filter-actions">
+            <button *ngIf="isModerator" type="button" class="btn-sort" [class.active-sort]="showModerationQueue" (click)="toggleModerationQueue()">
+                {{ showModerationQueue ? ("COMMUNITY.MOD_BACK" | translate) : ("COMMUNITY.MOD_QUEUE" | translate) }}
+            </button>
+            <div class="sort-group" *ngIf="!showModerationQueue">
+                <span class="sort-label">{{ "COMMUNITY.LANG_LABEL" | translate }}</span>
+                <button [class.active-sort]="activeLanguage === ''" (click)="setLanguage('')" class="btn-sort">{{ "COMMUNITY.LANG_ALL" | translate }}</button>
+                <button [class.active-sort]="activeLanguage === 'en'" (click)="setLanguage('en')" class="btn-sort">English</button>
+                <button [class.active-sort]="activeLanguage === 'hi'" (click)="setLanguage('hi')" class="btn-sort">हिन्दी</button>
+                <button [class.active-sort]="activeLanguage === 'te'" (click)="setLanguage('te')" class="btn-sort">తెలుగు</button>
+                <button [class.active-sort]="activeLanguage === 'ta'" (click)="setLanguage('ta')" class="btn-sort">தமிழ்</button>
+            </div>
+            <div class="sort-group" *ngIf="!showModerationQueue">
+                <span class="sort-label">{{ "COMMUNITY.SORT_LABEL" | translate }}</span>
+                <button *ngFor="let s of sortOptions" [class.active-sort]="activeSort === s.key" (click)="setSort(s.key)" class="btn-sort">{{ s.labelKey | translate }}</button>
+            </div>
+        </div>
+       </section>
+
+
+       <!-- main feed Area -->
+        <main class="feed-layout">
+            <div class="feed-stream">
+                <!-- placeholder loading -->
+                 <div *ngIf="isLoading" class="loading-box">
+                    <div class="spinner"></div>
+                    <p>{{ "COMMUNITY.LOADING_STORIES" | translate }}</p>
+                 </div>
+                 <!-- Empty State -->
+
+                 <div *ngIf="!isLoading && posts.length === 0" class="empty-box">
+                    <p class="empty-title">{{ "COMMUNITY.EMPTY_TITLE" | translate: { topic: topicLabel(activeTopic) } }}</p>
+                    <p class="empty-sub">{{ "COMMUNITY.EMPTY_SUB" | translate }}</p>
+                    <button class="btn-primary mt-3" (click)="openCreateModal()">{{ "COMMUNITY.WRITE_FIRST" | translate }}</button>
+                 </div>
+
+                 <!-- Post card List -->
+                  <article *ngFor="let post of posts" class="post-card" [id]="'post-' + post._id">
+                    <!-- post header -->
+                     <div class="card-header">
+                        <div class="author-block" (click)="viewTravelerProfile(post.author._id)">
+                            <img [src]="post.author.avatar || currentUserAvatar" alt="Avatar" class="author-avatar"/>
+                            <div>
+                                <div class="author-name-row">
+                                    <h4 class="author-name">{{post.author.name}}</h4>
+                                    <span *ngIf="post.author.isVerified" class="verified-icon" [title]="'COMMUNITY.VERIFIED_TITLE' | translate">✔</span>
+                                    <span *ngIf="post.author.role === 'verified_guide'" class="guide-tag">{{ "COMMUNITY.GUIDE" | translate }}</span>
+                                </div>
+                                <span class="post-date">{{post.createdAt | date:'mediumDate' }} • {{ topicLabel(post.topic) }}</span>
+                            </div>
+                        </div>
+
+                        <div class="header-right">
+                            <span *ngIf="post.isFeatured" class="featured-badge">{{ 'COMMUNITY.FEATURED' | translate }}</span>
+                            <button class="btn-icon" [title]="'COMMUNITY.REPORT_TITLE' | translate" (click)="onReportPost(post)">🚩</button>
+                            <div *ngIf="isModerator" class="moderation-actions">
+                                <button type="button" (click)="moderate(post, 'approve', false)">{{ "COMMUNITY.MOD_APPROVE" | translate }}</button>
+                                <button type="button" (click)="moderate(post, 'flag', false)">{{ "COMMUNITY.MOD_FLAG" | translate }}</button>
+                                <button type="button" (click)="moderate(post, 'remove', false)">{{ "COMMUNITY.MOD_REMOVE" | translate }}</button>
+                                <button type="button" (click)="moderate(post, 'approve', true)">{{ "COMMUNITY.MOD_FEATURE" | translate }}</button>
+                            </div>
+                        </div>
+                     </div>
+
+                     <!-- route and Location tagging -->
+                      <div *ngIf="post.routeTag?.departure || post.destinationTag" class="route-tag-bar">
+                        <span *ngIf="post.routeTag?.departure &&  post.routeTag?.destination" class="tag-item">
+                            🚌 {{post.routeTag?.departure | titlecase}} ➔ {{post.routeTag?.destination | titlecase}}
+                        </span>
+                        <span *ngIf="post.destinationTag" class="tag-item" >📍 {{post.destinationTag}} </span>
+                      </div>
+
+                      <!-- post Body -->
+                       <div class="card-body">
+                        <h2 class="post-title">{{post.title }}</h2>
+                        <p class="post-content">{{ post.content}}</p>
+
+                        <div *ngIf="post.photos && post.photos.length >0" class="photo-gallery">
+                            <img *ngFor="let pic of post.photos" [src]="pic" alt="Journey Snapshot" class="post-image">
+                        </div>
+                       </div>
+
+                       <!-- engagemaent footer bar -->
+                        <div class="card-footer">
+                            <div class="interactions">
+                                <button class="action-btn" [class.liked]="post.likes.includes(currentUserId)" (click)="onLike(post)">
+                                    <span class="heart-icon">♥</span>
+                                    <span>{{ "COMMUNITY.LIKES" | translate: { count: post.likes.length } }}</span>
+                                </button>
+
+                                <button class="action-btn" (click)="toggleComment(post)">
+                                    <span>💬</span>
+                                    <span>{{ "COMMUNITY.COMMENTS" | translate: { count: post.commentCount || 0 } }}</span>
+                                </button>
+
+                                <span class="views-count"> {{ "COMMUNITY.VIEWS" | translate: { count: post.views } }}</span>
+                            </div>
+
+                            <!-- social share Integration -->
+
+                            <div class="share-group">
+                                <span class="share-label">{{ "COMMUNITY.SHARE" | translate }}: </span>
+                                <button class="share-btn" [title]="'COMMUNITY.SHARE_WHATSAPP_TITLE' | translate" (click)="shareOnSocial('whatsapp', post)">{{ "COMMUNITY.SHARE_WHATSAPP" | translate }}</button>
+                                <button class="share-btn" [title]="'COMMUNITY.SHARE_X_TITLE' | translate" (click)="shareOnSocial('twitter', post)">{{ "COMMUNITY.SHARE_X" | translate }}</button>
+                                <button class="share-btn" [title]="'COMMUNITY.COPY_LINK_TITLE' | translate" (click)="shareOnSocial('copy', post)">{{ "COMMUNITY.SHARE_COPY" | translate }}</button>
+                            </div>
+                        </div>
+
+                        <!-- collapsible comments section -->
+                         <div *ngIf = "expandedCommentsPostId === post._id" class="comments-section">
+                            <h4 class="comments-heading">{{ "COMMUNITY.DISCUSSION" | translate: { count: (activeComments[post._id] || []).length } }}</h4>
+
+                            <div class="comments-list">
+                                <div *ngFor="let comment of activeComments[post._id]" class="comment-bubble">
+                                    <img [src]="comment.author.avatar || currentUserAvatar" class="comment-avatar" alt="Avatar">
+                                    <div class="comment-content">
+                                        <div class="comment-author-name">
+                                            {{comment.author.name}}
+                                            <span *ngIf="comment.author.isVerified" class="verified-icon-sm">✔</span>
+                                        </div>
+                                        <p class="comment-text"> {{comment.content}}</p>
+                                        <span class="comment-time">{{comment.createdAt |  date:'shortTime'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- comment input field -->
+                             <div class="comment-input-row">
+                                <input type="text" [placeholder]="'COMMUNITY.COMMENT_PLACEHOLDER' | translate" [(ngModel)]="newCommentText[post._id]" (keyup.enter)="submitComment(post._id)" class="comment-input">
+                                <button class="btn-send" (click)="submitComment(post._id)">{{ "COMMUNITY.REPLY_BTN" | translate }}</button>
+                             </div>
+                         </div>
+                  </article>
+
+            </div>
+        </main>
+
+
+
+        <!-- create Post modal -->
+         <div *ngIf="showCreateModal" class="modal-overlay">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3>{{ "COMMUNITY.CREATE_TITLE" | translate }}</h3>
+                    <button class="btn-close" (click)="closeCreateModal()">✕</button>
+                </div>
+
+                <div class="modal-body">
+                    <label class="form-label">{{ "COMMUNITY.CATEGORY_LABEL" | translate }}</label>
+                    <select [(ngModel)]="newPost.topic" class="form-control">
+                        <option value="Journey Stories">{{ topicLabel('Journey Stories') }}</option>
+                        <option value="Travel Tips">{{ topicLabel('Travel Tips') }}</option>
+                        <option value="Route Advice">{{ topicLabel('Route Advice') }}</option>
+                        <option value="Destination Guide">{{ topicLabel('Destination Guide') }}</option>
+                        <option value="General Discussion">{{ topicLabel('General Discussion') }}</option>
+                    </select> 
+
+                    <label class="form-label">{{ "COMMUNITY.STORY_TITLE_LABEL" | translate }}</label>
+                    <input type="text" [placeholder]="'COMMUNITY.STORY_TITLE_PLACEHOLDER' | translate" [(ngModel)]="newPost.title" class="form-control">
+                    <div class="grid-two">
+                        <div>
+                            <label class="form-label">{{ "COMMUNITY.FROM_CITY" | translate }}</label>
+                            <input type="text" placeholder="e.g. Delhi" [(ngModel)]="newPost.departure" class="form-control">
+                        </div>
+                        <div>
+                            <label class="form-label">{{ "COMMUNITY.TO_CITY" | translate }}</label>
+                            <input type="text" placeholder="e.g Jaipur" [(ngModel)]="newPost.destination" class="form-control">
+                        </div>
+                    </div>
+
+                    <label class="form-label">{{ "COMMUNITY.PHOTO_LABEL" | translate }}</label>
+                    <input type="url" placeholder="https://imge/..." [(ngModel)]="newPost.photoUrl" class="form-control">
+
+                    <label class="form-label">{{ "COMMUNITY.STORY_LABEL" | translate }}</label>
+                    <textarea rows="4" [placeholder]="'COMMUNITY.STORY_PLACEHOLDER' | translate" [(ngModel)]="newPost.content" class="form-control"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-secondary" (click)="closeCreateModal()">{{ "COMMON.CANCEL" | translate }}</button>
+                    <button class="btn-primary" (click)="handleCreatePost()">{{ "COMMUNITY.PUBLISH_NOW" | translate }}</button>
+                </div>
+            </div>
+         </div>
+
+         <!-- traveler profile modal -->
+          <div *ngIf="showProfileModal && selectedProfileData" class="modal-overlay">
+            <div class="modal-card profile-modal">
+                <div class="modal-header">
+                    <h3>{{ "COMMUNITY.PROFILE_TITLE" | translate }}</h3>
+                    <button class="btn-close" (click)="closeProfileModal()">✕</button>
+                </div>
+
+                <div class="profile-card-body">
+                    <div class="profile-top">
+                        <img [src]="selectedProfileData.profile.avatar || currentUserAvatar" alt="Avatar" class="profile-lg-avatar">
+                        <div class="profile-details">
+                            <h2>
+                                {{selectedProfileData.profile.name}}
+                                <span *ngIf="selectedProfileData.profile.isVerified" class="verified-icon">✔</span>
+                            </h2>
+                            <p class="profile-bio"> {{selectedProfileData.profile.bio}}</p>
+                            <div class="badge-list">
+                                <span *ngFor="let badge of selectedProfileData.profile.badges" class="badge-item">{{badge}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-stats-grid">
+                        <div class="stat-box">
+                            <span class="stat-num">{{selectedProfileData.stats.totalStories}}</span>
+                            <span class="stat-text">{{ "COMMUNITY.STORIES_SHARED" | translate }}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-num">{{selectedProfileData.stats.likesEarned}}</span>
+                            <span class="stat-text">{{ "COMMUNITY.COMMUNITY_LIKES" | translate }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+</div>

@@ -1,0 +1,229 @@
+<div class="notifications-wrapper">
+  <!-- dynamic notification ALERT -->
+  <div *ngIf="toastAlert" class ="floating-toast">
+    <span> {{toastAlert}}</span>
+  </div>
+
+  <!-- Header & Tab navigation -->
+  <div class="notifications-header">
+    <div class = "header-titles">
+      <div class="tag-label">{{ "NOTIFICATIONS.TAG" | translate }}</div>
+      <h1 class="page-title">{{ "NOTIFICATIONS.TITLE" | translate }}</h1>
+      <p class= "page-subtitle">{{ "NOTIFICATIONS.SUBTITLE" | translate }}</p>
+    </div>
+
+    <div class="tab-buttons">
+      <button [class.active-tab]="activeTab ==='inbox'" (click)="activeTab= 'inbox'" class = "tab-btn" >
+        {{ "NOTIFICATIONS.TAB_INBOX" | translate }} <span *ngIf="unreadCount> 0" class="badge-count" >{{unreadCount }}</span>
+      </button>
+      <button [class.active-tab] = "activeTab ==='preferences'" (click)="activeTab='preferences'" class="tab-btn">
+        {{ "NOTIFICATIONS.TAB_PREFERENCES" | translate }}
+      </button>
+      <button [class.active-tab]="activeTab=== 'simulator'" (click)="activeTab= 'simulator'" class ="tab-btn">
+        {{ "NOTIFICATIONS.TAB_SIMULATOR" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- 1st view: INBOX and Notification Logs -->
+  <div *ngIf="activeTab==='inbox'" class= "inbox-section">
+    <!-- filter & Action bar -->
+    <div class="filter-bar" >
+      <div  class= "filter-tags">
+        <button [class.active-filter]= "activeFilter ==='ALL'" (click)="setFilter('ALL')" class= "pill-btn" >{{ "NOTIFICATIONS.FILTER_ALL" | translate }}</button>
+        <button [class.active-filter] = "activeFilter ==='BOOKING_CONFIRMATION'"  (click)="setFilter('BOOKING_CONFIRMATION')" class="pill-btn" >{{ "NOTIFICATIONS.FILTER_BOOKINGS" | translate }}</button>
+        <button [class.active-filter] ="activeFilter==='JOURNEY_REMINDER'" (click)= "setFilter('JOURNEY_REMINDER')" class="pill-btn">{{ "NOTIFICATIONS.FILTER_REMINDERS" | translate }}</button>
+        <button [class.active-filter]="activeFilter === 'SCHEDULE_CHANGE'" (click) ="setFilter('SCHEDULE_CHANGE')" class ="pill-btn">{{ "NOTIFICATIONS.FILTER_SCHEDULE" | translate }}</button>
+        <button [class.active-filter]= "activeFilter === 'PROMOTIONAL_OFFER'"  (click)="setFilter('PROMOTIONAL_OFFER')" class="pill-btn" >{{ "NOTIFICATIONS.FILTER_OFFERS" | translate }}</button>
+      </div>
+
+      <div class="inbox-actions" >
+        <label class="checkbox-label">
+          <input type="checkbox" [checked]="showUnreadOnly" (change)="toggleUnreadFilter()" />
+          {{ "NOTIFICATIONS.UNREAD_ONLY" | translate }}
+        </label>
+        <button class="btn-mark-all" (click)="onMarkAllRead()" [disabled]="unreadCount === 0">
+          {{ "NOTIFICATIONS.MARK_ALL_READ" | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Notification feed -->
+    <div *ngIf="isLoading" class="state-card">
+      <div class="spinner-dot"></div>
+      <p>{{ "NOTIFICATIONS.SYNC_LOGS" | translate }}</p>
+    </div>
+
+    <div *ngIf="!isLoading && notifications.length === 0" class="state-card">
+      <p class="empty-title">{{ "NOTIFICATIONS.EMPTY_TITLE" | translate }}</p>
+      <p class="empty-desc">{{ "NOTIFICATIONS.EMPTY_DESC" | translate }}</p>
+    </div>
+
+    <div *ngIf="!isLoading && notifications.length > 0" class="notification-list">
+      <div 
+        *ngFor="let item of notifications" 
+        [class.unread-item]="!item.isRead"
+        (click)="onMarkRead(item)"
+        class="notification-card">
+        
+        <div class="card-side-indicator"></div>
+
+        <div class="card-main">
+          <div class="card-meta-row">
+            <span [ngClass]="getBadgeClass(item.eventType)" class="event-badge">
+              {{ item.eventType.replace('_', ' ') }}
+            </span>
+            <span class="locale-tag">{{ "NOTIFICATIONS.LANGUAGE_TAG" | translate: { code: item.language.toUpperCase() } }}</span>
+            <span class="timestamp">{{ item.createdAt | date:'medium' }}</span>
+          </div>
+
+          <h3 class="notification-title">{{ item.title }}</h3>
+          <p class="notification-body">{{ item.message }}</p>
+
+          <!-- Delivery audit andd Tracking -->
+          <div class="delivery-status-bar">
+            <span class="delivery-indicator" [class.delivered]="item.deliveryStatus === 'delivered'" [class.failed]="item.deliveryStatus === 'failed'">
+              {{ "NOTIFICATIONS.STATUS_LABEL" | translate }} {{ item.deliveryStatus | titlecase }}
+            </span>
+
+            <div class="channel-chips">
+              <span *ngFor="let log of item.deliveryLogs" class="channel-chip" [class.chip-success]="log.status === 'delivered'" [class.chip-fail]="log.status === 'failed'">
+                {{ log.channel | uppercase }}: {{ log.status}}
+              </span>
+            </div>
+
+            <button *ngIf="item.deliveryStatus === 'failed' || item.deliveryStatus === 'partially_delivered'" 
+                    class="btn-retry" 
+                    (click)="onRetry(item, $event)">
+              ↻ {{ "NOTIFICATIONS.RETRY_BTN" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: USER notification preferences-->
+  <div *ngIf="activeTab === 'preferences'" class="preferences-card">
+    <div class="pref-group">
+      <h3 class="pref-title">{{ "NOTIFICATIONS.LANG_HEADING" | translate }}</h3>
+      <p class="pref-desc">{{ "NOTIFICATIONS.LANG_DESC" | translate }}</p>
+      
+      <select [(ngModel)]="preferences.preferredLanguage" class="select-control">
+        <option value="en">English {{ "NOTIFICATIONS.DEFAULT_SUFFIX" | translate }}</option>
+        <option value="hi">हिंदी (Hindi)</option>
+        <option value="te">తెలుగు (Telugu)</option>
+        <option value="ta">தமிழ் (Tamil)</option>
+      </select>
+    </div>
+
+    <div class="pref-divider"></div>
+
+    <div class="pref-group">
+      <h3 class="pref-title">{{ "NOTIFICATIONS.CHANNELS_HEADING" | translate }}</h3>
+      <p class="pref-desc">{{ "NOTIFICATIONS.CHANNELS_DESC" | translate }}</p>
+
+      <div class="toggle-row">
+        <div>
+          <strong>{{ "NOTIFICATIONS.CHANNEL_EMAIL_TITLE" | translate }}</strong>
+          <p class="toggle-sub">{{ "NOTIFICATIONS.CHANNEL_EMAIL_DESC" | translate }}</p>
+        </div>
+        <input type="checkbox" [(ngModel)]="preferences.channels.email" class="toggle-switch" />
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <strong>{{ "NOTIFICATIONS.CHANNEL_PUSH_TITLE" | translate }}</strong>
+          <p class="toggle-sub">{{ "NOTIFICATIONS.CHANNEL_PUSH_DESC" | translate }}</p>
+        </div>
+        <input type="checkbox" [(ngModel)]="preferences.channels.push" class="toggle-switch" />
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <strong>{{ "NOTIFICATIONS.CHANNEL_SMS_TITLE" | translate }}</strong>
+          <p class="toggle-sub">{{ "NOTIFICATIONS.CHANNEL_SMS_DESC" | translate }}</p>
+        </div>
+        <input type="checkbox" [(ngModel)]="preferences.channels.sms" class="toggle-switch" />
+      </div>
+    </div>
+
+    <div class="pref-divider"></div>
+
+    <div class="pref-group">
+      <h3 class="pref-title">{{ "NOTIFICATIONS.EVENTS_HEADING" | translate }}</h3>
+      <p class="pref-desc">{{ "NOTIFICATIONS.EVENTS_DESC" | translate }}</p>
+
+      <div class="toggle-row">
+        <div>
+          <strong>{{ "NOTIFICATIONS.PROMO_TITLE" | translate }}</strong>
+          <p class="toggle-sub">{{ "NOTIFICATIONS.PROMO_DESC" | translate }}</p>
+        </div>
+        <input type="checkbox" [(ngModel)]="preferences.eventSubscriptions.promotions" class="toggle-switch" />
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <strong>{{ "NOTIFICATIONS.SCHEDULE_TITLE" | translate }}</strong>
+          <p class="toggle-sub">{{ "NOTIFICATIONS.SCHEDULE_DESC" | translate }}</p>
+        </div>
+        <input type="checkbox" [(ngModel)]="preferences.eventSubscriptions.scheduleChanges" class="toggle-switch" />
+      </div>
+    </div>
+
+    <div class="pref-footer">
+      <button class="btn-save-pref" (click)="savePreferences()">{{ "NOTIFICATIONS.SAVE_PREF_BTN" | translate }}</button>
+    </div>
+  </div>
+
+  <!-- 3rd view: event simulator -->
+  <div *ngIf="activeTab === 'simulator'" class="simulator-card">
+    <div class="sim-header">
+      <h3>{{ "NOTIFICATIONS.SIM_TITLE" | translate }}</h3>
+      <p>{{ "NOTIFICATIONS.SIM_DESC" | translate }}</p>
+    </div>
+
+    <div class="sim-body">
+      <label class="form-lbl">{{ "NOTIFICATIONS.EVENT_TYPE" | translate }}</label>
+      <select [(ngModel)]="testSimulator.eventType" class="select-control">
+        <option value="JOURNEY_REMINDER">{{ "NOTIFICATIONS.EV_REMINDER" | translate }}</option>
+        <option value="SCHEDULE_CHANGE">{{ "NOTIFICATIONS.EV_SCHEDULE" | translate }}</option>
+        <option value="PROMOTIONAL_OFFER">{{ "NOTIFICATIONS.EV_PROMO" | translate }}</option>
+        <option value="BOOKING_CONFIRMATION">{{ "NOTIFICATIONS.EV_BOOKING" | translate }}</option>
+      </select>
+
+      <div class="grid-form">
+        <div>
+          <label class="form-lbl">{{ "NOTIFICATIONS.DEPARTURE_CITY" | translate }}</label>
+          <input type="text" [(ngModel)]="testSimulator.departure" class="input-control" />
+        </div>
+        <div>
+          <label class="form-lbl">{{ "NOTIFICATIONS.DESTINATION_CITY" | translate }}</label>
+          <input type="text" [(ngModel)]="testSimulator.destination" class="input-control" />
+        </div>
+      </div>
+
+      <div *ngIf="testSimulator.eventType === 'SCHEDULE_CHANGE'">
+        <label class="form-lbl">{{ "NOTIFICATIONS.NEW_TIME" | translate }}</label>
+        <input type="text" [(ngModel)]="testSimulator.newTime" class="input-control" />
+      </div>
+
+      <div *ngIf="testSimulator.eventType === 'PROMOTIONAL_OFFER'" class="grid-form">
+        <div>
+          <label class="form-lbl">{{ "NOTIFICATIONS.PROMO_CODE" | translate }}</label>
+          <input type="text" [(ngModel)]="testSimulator.promoCode" class="input-control" />
+        </div>
+        <div>
+          <label class="form-lbl">{{ "NOTIFICATIONS.DISCOUNT_PCT" | translate }}</label>
+          <input type="number" [(ngModel)]="testSimulator.discountPercentage" class="input-control" />
+        </div>
+      </div>
+    </div>
+
+    <div class="sim-footer">
+      <button class="btn-dispatch" (click)="sendSimulatedNotification()">
+        ⚡ {{ "NOTIFICATIONS.DISPATCH_BTN" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

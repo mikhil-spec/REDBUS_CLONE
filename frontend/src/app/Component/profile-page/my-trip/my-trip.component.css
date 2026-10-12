@@ -1,0 +1,259 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.my-trips-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.empty-trips-card {
+  text-align: center;
+  padding: 48px 20px;
+  background-color: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+}
+
+.empty-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.empty-desc {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+.SingleTrip {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.2s ease;
+}
+
+.SingleTrip:hover {
+  box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.08);
+}
+
+.trip-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pnr-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pnr-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.status-pill {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pill-completed {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.pill-confirmed {
+  background-color: #e0f2fe;
+  color: #075985;
+}
+
+.pill-cancelled {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.btn-write-review {
+  background-color: #d84e55;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-write-review:hover {
+  background-color: #b91c1c;
+}
+
+.trip-main-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .trip-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.SingleTrip__image img {
+  width: 100%;
+  height: 140px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+}
+
+.SingleTrip__busdetails,
+.SingleTrip__persondetails {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.details-heading {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.route-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #d84e55;
+  margin-bottom: 4px;
+}
+
+.route-arrow {
+  color: #94a3b8;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  gap: 8px;
+}
+
+.info-label {
+  color: #64748b;
+}
+
+.info-value {
+  color: #1e293b;
+  text-align: right;
+}
+
+.passengers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 8px;
+}
+
+.passenger-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.p-name {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.p-meta {
+  color: #64748b;
+}
+
+.p-seat {
+  margin-left: auto;
+  font-weight: 600;
+  color: #d84e55;
+}
+
+/* Dark Mode Overrides */
+body.dark .empty-trips-card,
+body.dark-theme .empty-trips-card,
+body.dark .SingleTrip,
+body.dark-theme .SingleTrip {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .SingleTrip__busdetails,
+body.dark-theme .SingleTrip__busdetails,
+body.dark .SingleTrip__persondetails,
+body.dark-theme .SingleTrip__persondetails {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .trip-top-bar,
+body.dark-theme .trip-top-bar {
+  border-bottom-color: #334155 !important;
+}
+
+body.dark .pnr-title,
+body.dark-theme .pnr-title,
+body.dark .details-heading,
+body.dark-theme .details-heading,
+body.dark .p-name,
+body.dark-theme .p-name {
+  color: #f8fafc !important;
+}
+
+body.dark .info-value,
+body.dark-theme .info-value {
+  color: #cbd5e1 !important;
+}
+
+body.dark .info-label,
+body.dark-theme .info-label,
+body.dark .p-meta,
+body.dark-theme .p-meta {
+  color: #94a3b8 !important;
+}

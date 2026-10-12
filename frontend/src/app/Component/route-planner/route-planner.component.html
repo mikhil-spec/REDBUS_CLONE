@@ -1,0 +1,237 @@
+<div class="planner-container">
+  <!-- Toast Notification -->
+  <div *ngIf="toastMessage" class="planner-toast">
+    <span>{{ toastMessage }}</span>
+  </div>
+
+  <!-- LAYOUT: Left control Panel & Right leaflet map -->
+  <div class="planner-split-view">
+    <!-- LEFT control Panel -->
+    <aside class="planner-sidebar">
+      <div class="sidebar-header">
+        <span class="hub-tag">{{ 'UI.PLAN.LIVE_TRAFFIC' | translate }}</span>
+        <h1 class="hub-title">{{ "PLANNER.TITLE" | translate }}</h1>
+        <p class="hub-sub">{{ "PLANNER.SUBTITLE" | translate }}</p>
+      </div>
+
+      <!-- navigation tabs -->
+      <div class="nav-segmented">
+        <button [class.active-segment]="activeTab === 'routes'" (click)="activeTab = 'routes'">{{ "PLANNER.TAB_ROUTES" | translate }}</button>
+        <button [class.active-segment]="activeTab === 'compare'" (click)="activeTab = 'compare'">{{ "PLANNER.TAB_COMPARE" | translate }}</button>
+        <button [class.active-segment]="activeTab === 'saved'" (click)="activeTab = 'saved'">Saved ({{savedRoutesList.length }})</button>
+      </div>
+
+      <!-- TAB 1: Route builder & Alternative cards -->
+      <div *ngIf="activeTab === 'routes'" class="tab-pane">
+        <!-- Location picker card -->
+        <div class="location-card">
+          <div class="form-row">
+            <label class="field-lbl">{{ "PLANNER.ORIGIN_LABEL" | translate }}</label>
+            <select [(ngModel)]="originCity" (change)="calculateTripRoutes()" class="city-select">
+              <option *ngFor="let city of availableCities" [value]="city">{{city | titlecase}}</option>
+            </select>
+          </div>
+
+          <!-- waypoints section -->
+          <div class="waypoints-block">
+            <div class="wp-header-row">
+              <label class="field-lbl">Intermediate Waypoints ({{ waypoints.length }})</label>
+            </div>
+
+            <div *ngFor="let wp of waypoints; let i = index" class="waypoint-item">
+              <span class="wp-bullet">●</span>
+              <span class="wp-name">{{wp.name }}</span>
+              <button class="btn-del-wp" title="{{ 'UI.PLAN.REMOVE_WAYPOINT' | translate }}" (click)="removeWaypoint(i)">✕</button>
+            </div>
+
+            <!-- add Waypoint input -->
+            <div class="add-wp-row">
+              <input 
+                type="text" 
+                placeholder="{{ 'UI.PLAN.ADD_STOP_PLACEHOLDER' | translate }}" 
+                [(ngModel)]="newWaypointInput" 
+                (keyup.enter)="addCustomWaypoint()" 
+                class="input-wp" />
+              <button class="btn-add-wp" (click)="addCustomWaypoint()">{{ "PLANNER.ADD_WAYPOINT" | translate }}</button>
+            </div>
+          </div>
+
+          <div class="form-row mt-2">
+            <label class="field-lbl">{{ "PLANNER.DEST_LABEL" | translate }}</label>
+            <select [(ngModel)]="destinationCity" (change)="calculateTripRoutes()" class="city-select">
+              <option *ngFor="let city of availableCities" [value]="city">{{city | titlecase}}</option>
+            </select>
+          </div>
+
+          <button class="btn-recalculate" (click)="calculateTripRoutes()" [disabled]="isLoading">
+            <span *ngIf="!isLoading">⚡{{ 'UI.PLAN.RECOMPUTE' | translate }}</span>
+            <span *ngIf="isLoading">{{ 'UI.PLAN.CALCULATING' | translate }}</span>
+          </button>
+        </div>
+
+        <!-- live Traffic status Indicator -->
+        <div class="live-pulse-bar">
+          <div class="pulse-dot"></div>
+          <span>{{ "PLANNER.LIVE_TRAFFIC" | translate }}</span>
+          <small class="text-muted ml-auto">{{ lastTrafficUpdate | date:'mediumTime' }}</small>
+        </div>
+
+        <!-- Honest data-source notice: shown whenever the routes are not from live provider data -->
+        <div *ngIf="suggestedRoutes.length && suggestedRoutes[0].dataSource !== 'mapbox'"
+             role="note"
+             style="font-size:12px;padding:6px 10px;margin:8px 0;border-radius:6px;background:#fff7ed;color:#9a3412;border:1px solid #fdba74;">
+          {{ "PLANNER.ESTIMATED_NOTICE" | translate }}
+        </div>
+
+        <!-- Route alternatives List -->
+        <div class="routes-list">
+          <h3 class="section-title">{{ "PLANNER.SUGGESTED_ROUTES" | translate }}</h3>
+
+          <div 
+            *ngFor="let route of suggestedRoutes" 
+            [class.card-selected]="selectedRoute?.id === route.id"
+            (click)="selectRoute(route)"
+            class="route-card">
+            
+            <div class="route-header-row">
+              <div>
+                <h4 class="route-name">{{ route.name }}</h4>
+                <span *ngIf="route.isRecommended" class="tag-rec">{{ "PLANNER.FASTEST_BADGE" | translate }}</span>
+              </div>
+              <div class="time-block">
+                <span class="total-time">{{formatDuration(route.totalDurationMinutes) }}</span>
+                <span class="distance-text">{{ route.distanceKm }} km</span>
+              </div>
+            </div>
+
+            <!-- Traffic and delay gauge -->
+            <div class="traffic-meter-row">
+              <span class="traffic-pill" [ngClass]="'pill-' + route.congestionLevel.toLowerCase()">
+                Traffic: {{ route.congestionLevel}} (+{{route.trafficDelayMinutes}}m delay)
+              </span>
+              <span class="toll-info">Tolls: ₹{{route.tollCost}}</span>
+            </div>
+
+            <!-- bottleneck hotspots preview -->
+            <div *ngIf="route.trafficHotspots && route.trafficHotspots.length > 0" class="hotspots-container">
+              <span class="hotspot-lbl">{{ "PLANNER.CHOKE_POINTS" | translate }}:</span>
+              <span *ngFor="let spot of route.trafficHotspots" class="hotspot-item">
+                ⚠️ {{spot.name}} (+{{ spot.delayMin }}m)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action bar for Selected route -->
+        <div *ngIf="selectedRoute" class="route-actions-footer">
+          <button class="btn-save-route" (click)="openSaveModal()">⭐ {{ "PLANNER.SAVE_ROUTE_BTN" | translate }}</button>
+        </div>
+      </div>
+
+      <!-- TAB 2: ROUTE comparion Matrix -->
+      <div *ngIf="activeTab=== 'compare'" class="tab-pane">
+        <h3 class="section-title">{{ "PLANNER.COMPARE_TITLE" | translate }}</h3>
+        <p class="matrix-sub">{{ "PLANNER.COMPARE_SUBTITLE" | translate }}</p>
+
+        <div class="matrix-table-wrapper">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>{{ 'UI.PLAN.ROUTE_OPTION' | translate }}</th>
+                <th>{{ 'UI.PLAN.DISTANCE' | translate }}</th>
+                <th>{{ 'UI.PLAN.EST_TIME' | translate }}</th>
+                <th>{{ 'UI.PLAN.TRAFFIC_DELAY' | translate }}</th>
+                <th>{{ 'UI.PLAN.CONGESTION' | translate }}</th>
+                <th>{{ 'UI.PLAN.TOLL' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of suggestedRoutes" [class.highlight-row]="selectedRoute?.id === r.id">
+                <td>
+                  <strong>{{r.name }}</strong>
+                  <span *ngIf="r.isRecommended" class="table-rec-badge">{{ 'UI.PLAN.RECOMMENDED' | translate }}</span>
+                </td>
+                <td>{{ r.distanceKm}} km</td>
+                <td class="bold-cell">{{formatDuration(r.totalDurationMinutes)}}</td>
+                <td [class.red-text]="r.trafficDelayMinutes > 15">+{{r.trafficDelayMinutes}} mins</td>
+                <td>
+                  <span class="index-score" [ngClass]="'score-' + r.congestionLevel.toLowerCase()">
+                    {{r.congestionIndex}}/100 ({{r.congestionLevel }})
+                  </span>
+                </td>
+                <td>₹{{r.tollCost}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: SAVED routes -->
+      <div *ngIf="activeTab === 'saved'" class="tab-pane">
+        <h3 class="section-title">{{ 'UI.PLAN.SAVED_SHORTCUTS' | translate }}</h3>
+
+        <div *ngIf="savedRoutesList.length === 0" class="empty-saved-box">
+          <p>{{ 'UI.PLAN.NO_SAVED' | translate }}</p>
+          <small>{{ 'UI.PLAN.SAVE_HINT' | translate }}</small>
+        </div>
+
+        <div *ngFor="let item of savedRoutesList" class="saved-card" (click)="applySavedRoute(item)">
+          <div class="saved-card-body">
+            <h4 class="saved-title">{{ item.routeName }}</h4>
+            <div class="saved-path">
+              {{item.origin.name}} ➔ 
+              <span *ngFor="let w of item.waypoints">{{w.name }} ➔ </span>
+              {{ item.destination.name}}
+            </div>
+            <div class="saved-stats">
+              <span>{{ item.distanceKm }} km</span> • 
+              <span>~{{formatDuration(item.estimatedDurationMinutes)}}</span>
+            </div>
+          </div>
+          <button class="btn-del-saved" (click)="deleteSaved(item._id!, $event)" title="{{ 'UI.PLAN.DELETE_SAVED' | translate }}">🗑</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT interactive Map -->
+    <main class="planner-map-container">
+      <div id="interactive-route-map" class="map-canvas"></div>
+
+      <!-- Map vverlay Floating legend -->
+      <div class="map-floating-legend">
+        <h4>{{ 'UI.PLAN.LEGEND' | translate }}</h4>
+        <div class="legend-item"><span class="legend-box green-box"></span> {{ 'UI.PLAN.LOW_CONGESTION' | translate }}</div>
+        <div class="legend-item"><span class="legend-box yellow-box"></span> {{ 'UI.PLAN.MODERATE' | translate }}</div>
+        <div class="legend-item"><span class="legend-box red-box"></span> {{ 'UI.PLAN.HEAVY' | translate }}</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Save Route Modal -->
+  <div *ngIf="showSaveModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>{{ 'UI.PLAN.SAVE_CUSTOM' | translate }}</h3>
+        <button class="btn-x" (click)="closeSaveModal()">✕</button>
+      </div>
+
+      <div class="modal-content">
+        <label class="field-lbl">{{ 'UI.PLAN.ROUTE_NAME' | translate }}</label>
+        <input type="text" [(ngModel)]="saveRouteName" class="form-input" />
+
+        <label class="field-lbl mt-2">{{ 'UI.PLAN.ROUTE_TAG' | translate }}</label>
+        <select [(ngModel)]="saveRouteTag" class="form-input">
+          <option value="Daily Commute">{{ 'UI.PLAN.TAG_COMMUTE' | translate }}</option>
+          <option value="Weekend Gateway">{{ 'UI.PLAN.TAG_WEEKEND' | translate }}</option>
+          <option value="Express Highway">{{ 'UI.PLAN.TAG_EXPRESS' | translate }}</option>
+          <option value="Scenic Roadtrip">{{ 'UI.PLAN.TAG_SCENIC' | translate }}</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="closeSaveModal()">{{ "COMMON.CANCEL" | translate }}</button>
+        <button class="btn-confirm" (click)="saveCurrentRoute()">{{ "COMMON.SAVE" | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

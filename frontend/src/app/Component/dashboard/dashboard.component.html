@@ -1,0 +1,79 @@
+<div class="max-w-5xl mx-auto px-4 md:px-0 py-10">
+  <ng-container *ngIf="user; else signedOut">
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ "DASHBOARD.TITLE" | translate }}</h1>
+    <p class="text-gray-500 mt-1 mb-6">{{ "DASHBOARD.SUBTITLE" | translate }}</p>
+
+    <div *ngIf="loading" class="text-center text-gray-500 py-16">{{ "DASHBOARD.LOADING" | translate }}</div>
+
+    <ng-container *ngIf="!loading">
+      <div *ngIf="loadErrorKey" class="mb-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">
+        {{ loadErrorKey | translate }}
+      </div>
+
+      <!-- summary cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <p class="text-xs text-gray-500">{{ "DASHBOARD.STAT_UPCOMING" | translate }}</p>
+          <p class="text-2xl font-bold text-gray-800">{{ upcomingCount }}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <p class="text-xs text-gray-500">{{ "DASHBOARD.STAT_TOTAL" | translate }}</p>
+          <p class="text-2xl font-bold text-gray-800">{{ bookings.length }}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <p class="text-xs text-gray-500">{{ "DASHBOARD.STAT_UNREAD" | translate }}</p>
+          <p class="text-2xl font-bold text-gray-800">{{ unreadCount }}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <p class="text-xs text-gray-500">{{ "DASHBOARD.STAT_REVIEWS" | translate }}</p>
+          <p class="text-2xl font-bold text-gray-800">{{ reviewCount }}</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- trips -->
+        <section class="md:col-span-2">
+          <h2 class="text-lg font-semibold text-gray-800 mb-3">{{ "DASHBOARD.TRIPS_HEADING" | translate }}</h2>
+          <p *ngIf="bookings.length === 0" class="text-gray-500 bg-white rounded-xl border border-dashed border-gray-300 p-6 text-center">
+            {{ "DASHBOARD.NO_TRIPS" | translate }}
+            <a routerLink="/" class="block mt-3 text-red-600 font-semibold">{{ "DASHBOARD.BOOK_NOW" | translate }}</a>
+          </p>
+
+          <div *ngFor="let b of bookings" class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-3">
+            <div class="flex flex-wrap justify-between gap-2">
+              <div>
+                <p class="text-xs text-gray-500">{{ "DASHBOARD.PNR" | translate }}: <span class="font-semibold text-gray-800">{{ b.pnr }}</span></p>
+                <p class="font-semibold text-gray-800">{{ b.departureCity | titlecase }} → {{ b.destinationCity | titlecase }}</p>
+                <p class="text-sm text-gray-600">{{ b.bus?.busName }}</p>
+              </div>
+              <span class="self-start px-2 py-1 rounded-full text-xs font-semibold" [ngClass]="statusClass(b.bookingStatus)">
+                {{ statusKey(b.bookingStatus) | translate }}
+              </span>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-4 text-sm text-gray-600">
+              <span>{{ "DASHBOARD.JOURNEY" | translate }}: {{ b.journeyDate | date: "mediumDate" }}</span>
+              <span>{{ "DASHBOARD.SEATS" | translate }}: {{ b.seatsBooked?.join(", ") }}</span>
+              <span>{{ "DASHBOARD.FARE" | translate }}: ₹{{ b.totalFare }}</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- quick links -->
+        <aside>
+          <h2 class="text-lg font-semibold text-gray-800 mb-3">{{ "DASHBOARD.QUICK_LINKS" | translate }}</h2>
+          <div class="flex flex-col gap-2">
+            <a routerLink="/" class="px-4 py-3 rounded-lg bg-white border border-gray-100 hover:bg-gray-50 text-gray-700">{{ "DASHBOARD.GO_HOME" | translate }}</a>
+            <a routerLink="/notifications" class="px-4 py-3 rounded-lg bg-white border border-gray-100 hover:bg-gray-50 text-gray-700">{{ "DASHBOARD.GO_NOTIFICATIONS" | translate }}</a>
+            <a routerLink="/reviews" class="px-4 py-3 rounded-lg bg-white border border-gray-100 hover:bg-gray-50 text-gray-700">{{ "DASHBOARD.GO_REVIEWS" | translate }}</a>
+            <a routerLink="/community" class="px-4 py-3 rounded-lg bg-white border border-gray-100 hover:bg-gray-50 text-gray-700">{{ "DASHBOARD.GO_COMMUNITY" | translate }}</a>
+            <a routerLink="/planner" class="px-4 py-3 rounded-lg bg-white border border-gray-100 hover:bg-gray-50 text-gray-700">{{ "DASHBOARD.GO_PLANNER" | translate }}</a>
+          </div>
+        </aside>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #signedOut>
+    <p class="text-center text-gray-600 py-16">{{ "DASHBOARD.SIGN_IN_PROMPT" | translate }}</p>
+  </ng-template>
+</div>

@@ -1,0 +1,365 @@
+:host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: inherit;
+}
+
+.bus-booking-form {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.passenger-main-title {
+  text-align: center;
+  background-color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0;
+  padding: 16px 20px;
+  color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+  letter-spacing: 0.5px;
+}
+
+.content-block {
+  margin: 16px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.passenger-scroll-block {
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.passanger-info-title {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.info-title-icon {
+  font-size: 22px;
+  color: #0284c7;
+}
+
+.contact-title-icon {
+  font-size: 22px;
+  color: #d97706;
+}
+
+.info-title-text {
+  margin-left: 8px;
+}
+
+.passenger-seat-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.passenger-num-title {
+  font-size: 14px;
+  font-weight: 800;
+  margin: 0;
+  color: #0f172a;
+}
+
+.seat-badge-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #d84e55;
+  margin: 0;
+}
+
+.vertical-divider {
+  height: 14px;
+  background-color: #cbd5e1;
+  width: 2px;
+}
+
+.form-label {
+  margin-top: 12px;
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+
+.form-input {
+  width: 100%;
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+  font-size: 14px;
+  margin-top: 4px;
+  color: #0f172a;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.form-input:focus {
+  border-color: #d84e55;
+}
+
+.gender-age-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 6px;
+}
+
+.gender-group {
+  flex: 1;
+}
+
+.age-group {
+  width: 120px;
+}
+
+.radio-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.radio-button {
+  cursor: pointer;
+  accent-color: #d84e55;
+}
+
+.form-radio-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.passenger-divider {
+  border: 0;
+  border-top: 1px dashed #e2e8f0;
+  margin: 20px 0;
+}
+
+.passenger-contact-msg {
+  margin-bottom: 14px;
+  color: #854d0e;
+  background-color: #fef9c3;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 6px 14px;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.phone-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.prefix-input {
+  width: 60px;
+  text-align: center;
+  font-weight: 700;
+  color: #0284c7;
+  background-color: #f8fafc;
+}
+
+.phone-number-input {
+  flex: 1;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #d84e55;
+  cursor: pointer;
+}
+
+.checkbox-text {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.whatsapp-icon {
+  color: #16a34a;
+  margin-left: 8px;
+}
+
+.insure_title {
+  margin-top: 18px;
+  padding: 10px 14px;
+  background-color: #fef3c7;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  color: #92400e;
+}
+
+.insurance-features-row {
+  display: flex;
+  gap: 30px;
+  margin-top: 14px;
+}
+
+.insurance-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ins-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 4px;
+}
+
+.ins-sub {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.footer-block {
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.terms-text {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.proceed-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.proceed_to_button {
+  background-color: #d84e55;
+  color: #ffffff;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background-color 0.15s ease;
+}
+
+.proceed_to_button:hover {
+  background-color: #b91c1c;
+}
+
+/* Dark Mode Overrides (Task 5) */
+body.dark .bus-booking-form,
+body.dark-theme .bus-booking-form {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .passenger-main-title,
+body.dark-theme .passenger-main-title {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark .content-block,
+body.dark-theme .content-block {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .form-input,
+body.dark-theme .form-input {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .prefix-input,
+body.dark-theme .prefix-input {
+  background-color: #334155 !important;
+  color: #38bdf8 !important;
+}
+
+body.dark .form-label,
+body.dark-theme .form-label,
+body.dark .ins-sub,
+body.dark-theme .ins-sub,
+body.dark .terms-text,
+body.dark-theme .terms-text {
+  color: #94a3b8 !important;
+}
+
+body.dark .passenger-num-title,
+body.dark-theme .passenger-num-title,
+body.dark .passanger-info-title,
+body.dark-theme .passanger-info-title,
+body.dark .form-radio-label,
+body.dark-theme .form-radio-label,
+body.dark .checkbox-text,
+body.dark-theme .checkbox-text,
+body.dark .ins-title,
+body.dark-theme .ins-title {
+  color: #f8fafc !important;
+}
+
+body.dark .passenger-contact-msg,
+body.dark-theme .passenger-contact-msg {
+  background-color: #422006 !important;
+  color: #fef08a !important;
+}
+
+body.dark .insure_title,
+body.dark-theme .insure_title {
+  background-color: #451a03 !important;
+  color: #fde68a !important;
+}
+
+body.dark .footer-block,
+body.dark-theme .footer-block {
+  background-color: #0f172a !important;
+  border-top-color: #334155 !important;
+}
+
+body.dark .passenger-divider,
+body.dark-theme .passenger-divider {
+  border-top-color: #334155 !important;
+}

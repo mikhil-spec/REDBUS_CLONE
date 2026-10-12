@@ -1,0 +1,95 @@
+<div class="max-w-3xl mx-auto px-4 md:px-0 py-10">
+  <ng-container *ngIf="user; else signedOut">
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ "ACCOUNT.TITLE" | translate }}</h1>
+    <p class="text-gray-500 mt-1 mb-6">{{ "ACCOUNT.SUBTITLE" | translate }}</p>
+
+    <div *ngIf="loading" class="text-center text-gray-500 py-16">{{ "ACCOUNT.LOADING" | translate }}</div>
+
+    <ng-container *ngIf="!loading">
+      <div *ngIf="loadErrorKey" class="mb-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">{{ loadErrorKey | translate }}</div>
+
+      <div *ngIf="profile" class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 mb-6">
+        <div class="flex items-center gap-4 mb-5">
+          <img *ngIf="profile.avatar" [src]="profile.avatar" alt="" class="w-16 h-16 rounded-full object-cover" />
+          <div>
+            <p class="text-lg font-semibold text-gray-800">{{ profile.name }}</p>
+            <p class="text-sm text-gray-500">{{ profile.email }}</p>
+          </div>
+        </div>
+
+        <dl class="grid sm:grid-cols-2 gap-4 text-sm">
+          <div>
+            <dt class="text-gray-500">{{ "ACCOUNT.FIELD_EMAIL" | translate }}</dt>
+            <dd class="text-gray-800">{{ profile.email }}</dd>
+            <dd class="text-xs text-gray-400">{{ "ACCOUNT.EMAIL_NOTE" | translate }}</dd>
+          </div>
+          <div>
+            <dt class="text-gray-500">{{ "ACCOUNT.FIELD_PHONE" | translate }}</dt>
+            <dd class="text-gray-800">{{ phoneForDisplay || ("ACCOUNT.PHONE_NOT_ADDED" | translate) }}</dd>
+          </div>
+          <div>
+            <dt class="text-gray-500">{{ "ACCOUNT.FIELD_VERIFICATION" | translate }}</dt>
+            <dd class="text-gray-800">{{ (profile.isVerified ? "ACCOUNT.VERIFIED" : "ACCOUNT.NOT_VERIFIED") | translate }}</dd>
+          </div>
+          <div>
+            <dt class="text-gray-500">{{ "ACCOUNT.FIELD_ROLE" | translate }}</dt>
+            <dd class="text-gray-800">{{ profile.role || "-" }}</dd>
+          </div>
+          <div>
+            <dt class="text-gray-500">{{ "ACCOUNT.FIELD_LANGUAGE" | translate }}</dt>
+            <dd class="text-gray-800">{{ languageName(profile.notificationPreferences?.preferredLanguage) }}</dd>
+          </div>
+          <div>
+            <dt class="text-gray-500">{{ "ACCOUNT.FIELD_THEME" | translate }}</dt>
+            <dd class="text-gray-800">{{ (profile.themePreference === "dark" ? "ACCOUNT.THEME_DARK" : "ACCOUNT.THEME_LIGHT") | translate }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <form *ngIf="profile" (ngSubmit)="save()" class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">{{ "ACCOUNT.EDIT_TITLE" | translate }}</h2>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <label class="block text-sm">
+            <span class="text-gray-600">{{ "ACCOUNT.FIELD_NAME" | translate }}</span>
+            <input name="name" [(ngModel)]="form.name" required maxlength="80" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </label>
+          <label class="block text-sm">
+            <span class="text-gray-600">{{ "ACCOUNT.FIELD_PHONE" | translate }}</span>
+            <input name="phone" [(ngModel)]="form.phone" maxlength="20" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </label>
+          <label class="block text-sm">
+            <span class="text-gray-600">{{ "ACCOUNT.FIELD_GENDER" | translate }}</span>
+            <select name="gender" [(ngModel)]="form.gender" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2">
+              <option value="Male">{{ "ACCOUNT.GENDER_MALE" | translate }}</option>
+              <option value="Female">{{ "ACCOUNT.GENDER_FEMALE" | translate }}</option>
+              <option value="Other">{{ "ACCOUNT.GENDER_OTHER" | translate }}</option>
+            </select>
+          </label>
+          <label class="block text-sm">
+            <span class="text-gray-600">{{ "ACCOUNT.FIELD_AGE" | translate }}</span>
+            <input name="age" type="number" min="1" max="120" [(ngModel)]="form.age" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </label>
+        </div>
+
+        <p *ngIf="messageKey" class="mt-4 text-sm" [class.text-green-700]="!messageIsError" [class.text-red-700]="messageIsError">
+          {{ messageKey | translate }}
+        </p>
+
+        <div class="mt-5 flex flex-wrap gap-3 justify-between">
+          <button type="submit" [disabled]="saving || !form.name.trim()" class="px-5 py-2 rounded-lg bg-red-500 text-white font-semibold disabled:opacity-50">
+            {{ (saving ? "ACCOUNT.SAVING" : "ACCOUNT.SAVE") | translate }}
+          </button>
+          <button type="button" (click)="signOut()" class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+            {{ "ACCOUNT.SIGN_OUT" | translate }}
+          </button>
+        </div>
+      </form>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #signedOut>
+    <p *ngIf="auth.sessionExpired" class="text-center text-red-700 pt-16">{{ "ACCOUNT.SESSION_EXPIRED" | translate }}</p>
+    <p class="text-center text-gray-600 py-16">{{ "ACCOUNT.SIGN_IN_PROMPT" | translate }}</p>
+  </ng-template>
+</div>

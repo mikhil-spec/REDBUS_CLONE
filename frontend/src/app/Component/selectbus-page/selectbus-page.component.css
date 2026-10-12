@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.selectbus {
+  min-height: calc(100vh - 65px);
+  background-color: inherit;
+  color: inherit;
+}
+
+.SelectBUS_MAINCONTENT {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 960px) {
+  .SelectBUS_MAINCONTENT {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark Mode Theme Overrides */
+body.dark .selectbus,
+body.dark-theme .selectbus {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}

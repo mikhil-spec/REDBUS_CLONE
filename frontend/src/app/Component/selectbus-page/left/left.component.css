@@ -1,0 +1,97 @@
+:host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.left {
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.left_filters {
+  margin-bottom: 20px;
+}
+
+.left_filters > p {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 6px;
+}
+
+.left ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.left ul li {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 10px 0px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.left ul li:hover {
+  color: #d84e55;
+}
+
+.first-section {
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 10px;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.first-section input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #d84e55;
+}
+
+.first-section mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #64748b;
+}
+
+/* Dark Mode Overrides (Task 5) */
+body.dark .left,
+body.dark-theme .left {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .left_filters > p,
+body.dark-theme .left_filters > p {
+  color: #94a3b8 !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark .left ul li,
+body.dark-theme .left ul li {
+  border-bottom-color: #334155 !important;
+  color: #cbd5e1 !important;
+}
+
+body.dark .left ul li:hover,
+body.dark-theme .left ul li:hover {
+  color: #f87171 !important;
+}
+
+body.dark .first-section mat-icon,
+body.dark-theme .first-section mat-icon {
+  color: #94a3b8 !important;
+}

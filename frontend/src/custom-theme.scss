@@ -1,0 +1,42 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material.
+@include mat.core();
+
+// Define the light palettes
+$frontend-primary: mat.define-palette(mat.$indigo-palette);
+$frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$frontend-warn: mat.define-palette(mat.$red-palette);
+
+// Create the light theme object
+$frontend-theme: mat.define-light-theme((
+  color: (
+    primary: $frontend-primary,
+    accent: $frontend-accent,
+    warn: $frontend-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+// Include light theme styles for components
+@include mat.all-component-themes($frontend-theme);
+
+// Define dark theme palette and configuration
+$frontend-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $frontend-primary,
+    accent: $frontend-accent,
+    warn: $frontend-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+// Apply Material dark theme whenever .dark-theme or .dark is present
+.dark-theme,
+.dark {
+  @include mat.all-component-colors($frontend-dark-theme);
+}

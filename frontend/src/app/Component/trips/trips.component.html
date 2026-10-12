@@ -1,0 +1,64 @@
+<div class="max-w-4xl mx-auto px-4 md:px-0 py-6">
+  <ng-container *ngIf="user; else signedOut">
+    <h2 class="text-xl font-semibold text-gray-800">{{ "TRIPS.TITLE" | translate }}</h2>
+    <p class="text-gray-500 text-sm mb-4">{{ "TRIPS.SUBTITLE" | translate }}</p>
+
+    <div class="flex flex-wrap gap-2 mb-4">
+      <button *ngFor="let f of filters" (click)="filter = f"
+              class="px-3 py-1.5 rounded-full text-sm border"
+              [ngClass]="filter === f ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'">
+        {{ filterKey(f) | translate }}
+      </button>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2 mb-4 text-sm">
+      <span class="text-gray-500">{{ "TRIPS.SORT_LABEL" | translate }}</span>
+      <button *ngFor="let s of sortOptions" (click)="sort = s.key" class="px-2.5 py-1 rounded-md border text-sm"
+              [ngClass]="sort === s.key ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'">
+        {{ s.labelKey | translate }}
+      </button>
+    </div>
+
+    <p *ngIf="actionKey" class="mb-3 text-sm" [class.text-green-700]="!actionIsError" [class.text-red-700]="actionIsError">{{ actionKey | translate }}</p>
+
+    <div *ngIf="loading" class="text-center text-gray-500 py-12">{{ "TRIPS.LOADING" | translate }}</div>
+    <div *ngIf="!loading && loadErrorKey" class="mb-4 p-3 rounded-lg bg-red-50 text-red-700 text-sm">{{ loadErrorKey | translate }}</div>
+    <p *ngIf="!loading && !loadErrorKey && visible.length === 0" class="text-gray-500 bg-white rounded-xl border border-dashed border-gray-300 p-6 text-center">
+      {{ "TRIPS.EMPTY" | translate }}
+    </p>
+
+    <div *ngFor="let b of visible" class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-3">
+      <div class="flex flex-wrap justify-between gap-2">
+        <div>
+          <p class="text-xs text-gray-500">{{ "DASHBOARD.PNR" | translate }}: <span class="font-semibold text-gray-800">{{ b.pnr }}</span></p>
+          <p class="font-semibold text-gray-800">{{ b.departureCity | titlecase }} → {{ b.destinationCity | titlecase }}</p>
+          <p class="text-sm text-gray-600">{{ b.bus?.busName }}</p>
+        </div>
+        <span class="self-start px-2 py-1 rounded-full text-xs font-semibold" [ngClass]="statusClass(b.bookingStatus)">
+          {{ statusKey(b.bookingStatus) | translate }}
+        </span>
+      </div>
+
+      <div class="mt-3 flex flex-wrap gap-4 text-sm text-gray-600">
+        <span>{{ "DASHBOARD.JOURNEY" | translate }}: {{ b.journeyDate | date: "mediumDate" }}</span>
+        <span>{{ "DASHBOARD.SEATS" | translate }}: {{ b.seatsBooked?.join(", ") }}</span>
+        <span>{{ "DASHBOARD.FARE" | translate }}: ₹{{ b.totalFare }}</span>
+      </div>
+
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button *ngIf="isUpcoming(b)" (click)="cancel(b)" [disabled]="cancellingPnr === b.pnr"
+                class="px-3 py-1.5 rounded-lg border border-red-300 text-red-600 text-sm hover:bg-red-50 disabled:opacity-50">
+          {{ "TRIPS.CANCEL_BTN" | translate }}
+        </button>
+        <a *ngIf="b.bookingStatus === 'Completed'" routerLink="/reviews"
+           class="px-3 py-1.5 rounded-lg border border-gray-300 text-gray-700 text-sm hover:bg-gray-50">
+          {{ "TRIPS.REVIEW_TRIP" | translate }}
+        </a>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #signedOut>
+    <p class="text-center text-gray-600 py-12">{{ "PROFILE.SIGN_IN_PROMPT" | translate }}</p>
+  </ng-template>
+</div>

@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+body.dark-theme footer,
+body.dark footer {
+  background-color: #0f172a !important;
+  color: #cbd5e1 !important;
+  border-top-color: #1e293b !important;
+}

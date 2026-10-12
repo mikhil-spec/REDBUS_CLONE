@@ -1,0 +1,74 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.right-bus-catalog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.bus-cards-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bus-item-wrapper {
+  width: 100%;
+}
+
+.catalog-state-card {
+  background-color: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  color: #64748b;
+  margin-top: 12px;
+}
+
+.empty-catalog h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 12px 0 6px;
+}
+
+.empty-catalog p {
+  font-size: 13px;
+  margin: 0;
+}
+
+.empty-bus-icon {
+  font-size: 40px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 4px solid #f1f5f9;
+  border-top-color: #d84e55;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Dark Mode Overrides (Task 5) */
+body.dark .catalog-state-card,
+body.dark-theme .catalog-state-card {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #94a3b8 !important;
+}
+
+body.dark .empty-catalog h3,
+body.dark-theme .empty-catalog h3 {
+  color: #f8fafc !important;
+}

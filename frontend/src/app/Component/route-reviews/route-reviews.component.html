@@ -1,0 +1,361 @@
+<div class="reviews-page-wrapper">
+  <!-- Toast notification -->
+  <div *ngIf="toastAlert" class="floating-toast">
+    <span>{{ toastAlert }}</span>
+  </div>
+
+  <!-- Header Banner -->
+  <header class="reviews-hero">
+    <div class="hero-content">
+      <div class="verified-pill">🛡️ {{ "REVIEWS.HERO_TAG" | translate }}</div>
+      <h1 class="hero-title">{{ "REVIEWS.TITLE" | translate }}</h1>
+      <p class="hero-subtitle">
+        {{ "REVIEWS.SUBTITLE" | translate }}
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-write-review" (click)="openWriteReviewModal()">
+          ⭐ {{ "REVIEWS.RATE_BTN" | translate }} {{ "REVIEWS.AVAILABLE" | translate: { count: eligibleJourneys.length } }}
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Route / Bus selector bar -->
+  <section class="bus-selector-bar">
+    <label class="bus-select-label">{{ "REVIEWS.SELECT_ROUTE" | translate }}</label>
+    <div class="bus-chips">
+      <button
+        [class.active-bus]="selectedBusId === 'all'"
+        (click)="changeSelectedBus('all')"
+        class="bus-chip-btn"
+      >
+        {{ "REVIEWS.ALL_ROUTES" | translate }}
+      </button>
+      <button
+        *ngFor="let bus of availableBuses"
+        [class.active-bus]="selectedBusId === bus._id"
+        (click)="changeSelectedBus(bus._id)"
+        class="bus-chip-btn"
+      >
+        {{bus.busName}} ({{ bus.departureCity | titlecase }} ➔
+        {{bus.destinationCity | titlecase }}) · {{ bus.reviewCount || 0 }}
+      </button>
+    </div>
+    <p *ngIf="routesMessageKey" class="mt-2 text-sm text-gray-500">{{ routesMessageKey | translate }}</p>
+    </section>
+
+  <!-- Main Grid : Rating summary card and Filtered reviews Stream -->
+  <div class="reviews-layout">
+    <!-- LEFT: rating aggregates and star breakdown -->
+    <aside class="rating-summary-card">
+      <div class="score-box">
+        <span class="big-score">{{summary.averageRating}}</span>
+        <div class="stars-row">
+          <span *ngFor="let s of getStarsArray(5)" class="gold-star">★</span>
+        </div>
+        <span class="reviews-count-lbl"
+          >{{ "REVIEWS.VERIFIED_RATINGS" | translate: { count: summary.totalReviews } }}</span
+        >
+      </div>
+
+      <div class="breakdown-list">
+        <div
+          *ngFor="let star of [5, 4, 3, 2, 1]"
+          class="breakdown-row"
+          (click)="setStarFilter(star)"
+        >
+          <span class="star-num-lbl">{{star}} ★</span>
+          <div class="progress-bar-bg">
+            <div
+              class="progress-bar-fill"
+              [style.width.%]="getStarPercentage(star)"
+            ></div>
+          </div>
+          <span class="pct-lbl">{{summary.starBreakdown[star] || 0 }}</span>
+        </div>
+      </div>
+
+      <div class="guidelines-card">
+        <h4>{{ "REVIEWS.INTEGRITY_TITLE" | translate }}</h4>
+        <ul>
+          <li>✓ {{ "REVIEWS.INTEGRITY_1" | translate }}</li>
+          <li>✓ {{ "REVIEWS.INTEGRITY_2" | translate }}</li>
+          <li>✓ {{ "REVIEWS.INTEGRITY_3" | translate }}</li>
+          <li>✓ {{ "REVIEWS.INTEGRITY_4" | translate }}</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- RIGHT: Reviews stream and Sorting -->
+    <main class="reviews-feed">
+      <!-- Sorting & filter controls -->
+      <div class="feed-filter-bar">
+        <div class="filter-pills">
+          <button
+            [class.active-filter]="activeStarFilter === 0"
+            (click)="setStarFilter(0)"
+            class="pill-btn"
+          >
+            {{ "REVIEWS.ALL_REVIEWS" | translate }}
+          </button>
+          <button
+            *ngFor="let star of [5, 4, 3, 2, 1]"
+            [class.active-filter]="activeStarFilter === star"
+            (click)="setStarFilter(star)"
+            class="pill-btn"
+          >
+            {{ "REVIEWS.ONLY_STAR" | translate: { star: star } }}
+          </button>
+        </div>
+
+        <div class="filter-pills" style="margin-top: 8px">
+          <button [class.active-filter]="activeLanguage === ''" (click)="setLanguageFilter('')" class="pill-btn">
+            {{ "REVIEWS.LANG_ALL" | translate }}
+          </button>
+          <button *ngFor="let code of languageCodes" [class.active-filter]="activeLanguage === code" (click)="setLanguageFilter(code)" class="pill-btn">
+            {{ languageLabel(code) }}
+          </button>
+        </div>
+
+        <div class="sort-selector">
+          <span>{{ "REVIEWS.SORT" | translate }}</span>
+          <button
+            [class.active-sort]="activeSort === 'recent'"
+            (click)="setSort('recent')"
+            class="btn-sort-link"
+          >
+            {{ "REVIEWS.SORT_RECENT" | translate }}
+          </button>
+          <button
+            [class.active-sort]="activeSort === 'highest'"
+            (click)="setSort('highest')"
+            class="btn-sort-link"
+          >
+            {{ "REVIEWS.SORT_HIGHEST" | translate }}
+          </button>
+          <button
+            [class.active-sort]="activeSort === 'lowest'"
+            (click)="setSort('lowest')"
+            class="btn-sort-link"
+          >
+            {{ "REVIEWS.SORT_LOWEST" | translate }}
+          </button>
+          <button
+            [class.active-sort]="activeSort === 'helpful'"
+            (click)="setSort('helpful')"
+            class="btn-sort-link"
+          >
+            {{ "REVIEWS.SORT_HELPFUL" | translate }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div *ngIf="isLoading" class="state-card">
+        <div class="spinner"></div>
+        <p>{{ "REVIEWS.LOADING" | translate }}</p>
+      </div>
+
+      <!-- empty state -->
+      <div
+        *ngIf="!isLoading && reviews.length === 0"
+        class="state-card empty-state"
+      >
+        <p class="empty-title">{{ "REVIEWS.EMPTY_TITLE" | translate }}</p>
+        <p class="empty-sub">
+          {{ "REVIEWS.EMPTY_SUB" | translate }}
+        </p>
+        <button
+          *ngIf="eligibleJourneys.length > 0"
+          class="btn-write-review mt-3"
+          (click)="openWriteReviewModal()"
+        >
+          {{ "REVIEWS.WRITE_REVIEW" | translate }}
+        </button>
+      </div>
+
+      <!-- Reviews List -->
+      <article *ngFor="let rev of reviews" class="review-item-card">
+        <!-- Reviewer Header -->
+        <div class="review-header">
+          <div class="reviewer-meta">
+            <img
+              [src]="
+                rev.customer.avatar ||
+                defaultAvatar
+              "
+              class="reviewer-avatar"
+              alt="Avatar"
+            />
+            <div>
+              <div class="name-row">
+                <span class="reviewer-name">{{
+                  rev.customer.name || ("REVIEWS.VERIFIED_PASSENGER" | translate)
+                }}</span>
+                <span
+                  *ngIf="rev.customer?.isVerified"
+                  class="verified-icon"
+                  [title]="'REVIEWS.VERIFIED_PASSENGER' | translate"
+                  >✔</span
+                >
+                <span style="font-size: 11px; padding: 1px 8px; border-radius: 999px; background: #eef2ff; color: #3730a3">{{ languageLabel(rev.language || "en") }}</span>
+                <span
+                  *ngIf="rev.isTrustedReviewer"
+                  class="trusted-badge"
+                  [title]="'REVIEWS.TRUSTED_TITLE' | translate"
+                  >🛡️ {{ "REVIEWS.TRUSTED_REVIEWER" | translate }}</span
+                >
+              </div>
+              <span class="review-date"
+                >{{rev.createdAt | date: "mediumDate"}} • {{ "REVIEWS.JOURNEY" | translate }}
+                {{rev.departureCity | titlecase}} ➔
+                {{rev.destinationCity | titlecase}} · {{ rev.bus?.busName }}</span
+              >
+            </div>
+          </div>
+
+          <div class="rating-stars-badge">
+            <span class="stars-text">{{ "REVIEWS.RATING_OUT_OF" | translate: { rating: rev.rating } }}</span>
+            <span class="star-icon">★</span>
+          </div>
+        </div>
+
+        <!-- Review Body -->
+        <div class="review-body">
+          <h3 *ngIf="rev.headline" class="review-headline">
+            "{{ rev.headline}}"
+          </h3>
+          <p class="review-comment">{{rev.comment}}</p>
+        </div>
+
+        <!-- Review actions and 24hr Edit window -->
+        <div class="review-footer">
+          <div class="helpful-action">
+            <button
+              class="btn-helpful"
+              [class.upvoted]="rev.helpfulVotes.includes(currentCustomerId)"
+              (click)="onVoteHelpful(rev)"
+            >
+              👍 {{ "REVIEWS.HELPFUL" | translate: { count: rev.helpfulVotes.length } }}
+            </button>
+            <button
+              class="btn-report"
+              (click)="onReport(rev)"
+              [title]="'REVIEWS.REPORT_TITLE' | translate"
+            >
+              🚩 {{ "REVIEWS.REPORT" | translate }}
+            </button>
+          </div>
+
+          <!-- Edit Button (Available only within 24 hours of creation) -->
+          <div
+            *ngIf="rev.customer?._id === currentCustomerId"
+            class="owner-controls"
+          >
+            <button
+              *ngIf="rev.canEdit"
+              class="btn-edit-24h"
+              (click)="openEditModal(rev)"
+            >
+              ✏️ {{ "REVIEWS.EDIT_BTN" | translate }}
+            </button>
+            <span *ngIf="!rev.canEdit" class="window-expired-tag"
+              >🔒 {{ "REVIEWS.EDIT_LOCKED" | translate }}</span
+            >
+          </div>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <!-- Review modal (Create / Edit) -->
+  <div *ngIf="showReviewModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>
+          {{ (isEditing ? "REVIEWS.MODAL_EDIT" : "REVIEWS.MODAL_NEW") | translate }}
+        </h3>
+        <button class="btn-close" (click)="closeReviewModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Eligible Booking selection -->
+        <div *ngIf="!isEditing" class="form-group">
+          <label class="form-label">{{ "REVIEWS.SELECT_JOURNEY" | translate }}</label>
+          <select [(ngModel)]="reviewForm.bookingId" class="form-control">
+            <option
+              *ngFor="let journey of eligibleJourneys"
+              [value]="journey._id"
+            >
+              {{ "REVIEWS.PNR" | translate }} {{journey.pnr}} - {{journey.bus.busName}} ({{
+                journey.departureCity | titlecase
+              }}
+              {{ "REVIEWS.TO" | translate }} {{ journey.destinationCity | titlecase}})
+            </option>
+          </select>
+        </div>
+
+        <!-- Star rating picker -->
+        <div class="form-group">
+          <label class="form-label">{{ "REVIEWS.RATING_LABEL" | translate }}</label>
+          <div class="star-picker">
+            <button
+              *ngFor="let star of [1, 2, 3, 4, 5]"
+              type="button"
+              (click)="reviewForm.rating = star"
+              class="star-pick-btn"
+              [class.star-active]="reviewForm.rating >= star"
+            >
+              ★
+            </button>
+            <span class="star-label"
+              >{{reviewForm.rating}} {{ "REVIEWS.STARS_SELECTED" | translate }}</span
+            >
+          </div>
+        </div>
+
+        <!-- Headline Input -->
+        <div class="form-group">
+          <label class="form-label">{{ "REVIEWS.HEADLINE_LABEL" | translate }}</label>
+          <input
+            type="text"
+            [placeholder]="'REVIEWS.HEADLINE_PLACEHOLDER' | translate"
+            [(ngModel)]="reviewForm.headline"
+            class="form-control"
+          />
+        </div>
+
+        <!-- Comment Textarea with character counter -->
+        <div class="form-group">
+          <label class="form-label"
+            >{{ "REVIEWS.COMMENT_LABEL" | translate }}</label
+          >
+          <textarea
+            rows="4"
+            [placeholder]="'REVIEWS.COMMENT_PLACEHOLDER' | translate"
+            [(ngModel)]="reviewForm.comment"
+            class="form-control"
+          ></textarea>
+          <small
+            class="char-count"
+            [class.char-valid]="reviewForm.comment.trim().length >= 20"
+          >
+            {{ "REVIEWS.CHAR_COUNT" | translate: { count: reviewForm.comment.trim().length } }}
+          </small>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeReviewModal()">{{ "COMMON.CANCEL" | translate }}</button>
+        <button
+          class="btn-submit"
+          [disabled]="reviewForm.comment.trim().length < 20"
+          (click)="submitReviewForm()"
+        >
+          {{ (isEditing ? "REVIEWS.SUBMIT_EDIT" : "REVIEWS.SUBMIT_NEW") | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

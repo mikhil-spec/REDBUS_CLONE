@@ -1,0 +1,17 @@
+<div class="security-container">
+    <mat-icon style="font-size: 20px; padding-bottom: 10px;">security</mat-icon>
+    <div>{{ 'UI.SORT.SAFETY_NOTE' | translate }}</div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="main-container">
+    <div class="main-container1">
+      <div>{{ 'UI.SORT.BUSES_LIST' | translate }}</div>
+      <div>{{ 'UI.SORT.SORT_BY' | translate }}</div>
+    </div>
+    <div class="main-container2 cursor-pointer" (click)="sortBy('departure')">Departure{{ arrow('departure') }}</div>
+    <div class="main-container3 cursor-pointer" (click)="sortBy('duration')">Duration{{ arrow('duration') }}</div>
+    <div class="main-container4 cursor-pointer" (click)="sortBy('arrival')">Arrivals{{ arrow('arrival') }}</div>
+    <div class="main-container5 cursor-pointer" (click)="sortBy('rating')">Ratings{{ arrow('rating') }}</div>
+    <div class="main-container6 cursor-pointer" (click)="sortBy('fare')">Fare{{ arrow('fare') }}</div>
+    <div class="main-container7 cursor-pointer" (click)="sortBy('seats')">Seats Available{{ arrow('seats') }}</div>
+  </div>

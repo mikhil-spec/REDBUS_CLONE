@@ -1,0 +1,272 @@
+:host {
+  display: block;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.mainContainer {
+  width: 100%;
+  min-height: 350px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  padding: 24px 16px;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+/* Container 1: Bus Seat Layout */
+.mainContainer1 {
+  width: 580px;
+  max-width: 100%;
+  min-height: 240px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.mainContainer1Left {
+  width: 10%;
+  height: 100%;
+  border-right: 2px dashed #cbd5e1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.driver-wheel-icon {
+  font-size: 28px;
+  color: #64748b;
+  transform: rotate(45deg);
+}
+
+.mainContainer1Right {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 14px;
+}
+
+.seat-deck-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.aisle-spacer {
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px dashed #e2e8f0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.aisle-text {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #94a3b8;
+}
+
+/* Container 2: Boarding & Fare Summary */
+.mainContainer2 {
+  width: 440px;
+  max-width: 100%;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.mainContainer21 {
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-heading {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.change-action {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0284c7;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.mainContainer22,
+.mainContainer23 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.location-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.location-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.loc-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #d84e55;
+}
+
+.location-sub {
+  font-size: 11px;
+  color: #64748b;
+  margin-left: 24px;
+}
+
+.location-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.divider-line {
+  margin: 12px 0 !important;
+  border-color: #f1f5f9 !important;
+}
+
+.mainContainer24 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.label-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.selected-seats-badge {
+  font-size: 14px;
+  font-weight: 800;
+  color: #d84e55;
+}
+
+.mainContainer25 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 10px;
+}
+
+.mainContainer26 {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.amount-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.tax-notice {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.amount-price {
+  font-weight: 800;
+  font-size: 18px;
+  color: #d84e55;
+}
+
+.mainContainer27 {
+  margin-top: 16px;
+}
+
+/* Dark Mode Overrides (Task 5) */
+body.dark .mainContainer,
+body.dark-theme .mainContainer {
+  background-color: #0f172a !important;
+}
+
+body.dark .mainContainer1,
+body.dark-theme .mainContainer1,
+body.dark .mainContainer2,
+body.dark-theme .mainContainer2 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .mainContainer1Left,
+body.dark-theme .mainContainer1Left {
+  border-right-color: #334155 !important;
+}
+
+body.dark .driver-wheel-icon,
+body.dark-theme .driver-wheel-icon {
+  color: #94a3b8 !important;
+}
+
+body.dark .panel-heading,
+body.dark-theme .panel-heading,
+body.dark .location-title,
+body.dark-theme .location-title,
+body.dark .mainContainer25,
+body.dark-theme .mainContainer25,
+body.dark .location-time,
+body.dark-theme .location-time,
+body.dark .amount-title,
+body.dark-theme .amount-title {
+  color: #f8fafc !important;
+}
+
+body.dark .label-title,
+body.dark-theme .label-title,
+body.dark .location-sub,
+body.dark-theme .location-sub,
+body.dark .tax-notice,
+body.dark-theme .tax-notice,
+body.dark .aisle-text,
+body.dark-theme .aisle-text {
+  color: #94a3b8 !important;
+}
+
+body.dark .divider-line,
+body.dark-theme .divider-line {
+  border-color: #334155 !important;
+}
+
+body.dark .aisle-spacer,
+body.dark-theme .aisle-spacer {
+  border-color: #334155 !important;
+}

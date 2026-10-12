@@ -1,0 +1,7 @@
+# Secrets: the real configuration file lives here and must never be committed
+.env
+.env.*
+!.env.example
+
+node_modules/
+npm-debug.log*

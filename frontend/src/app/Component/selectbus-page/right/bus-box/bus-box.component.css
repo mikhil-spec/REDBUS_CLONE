@@ -1,0 +1,308 @@
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.bus-box {
+  width: 100%;
+  min-height: 180px;
+  height: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  margin-top: 16px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 16px;
+  background-color: #ffffff;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.bus-box:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* Bus Section 1 */
+.busBoxSection1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.busBoxSection11 {
+  width: 20%;
+  min-width: 140px;
+}
+
+.operator-title {
+  color: #0f172a;
+  line-height: 1.4;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.bus-type-subtitle {
+  color: #64748b;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.busBoxSection12,
+.busBoxSection14 {
+  width: 12%;
+  min-width: 90px;
+}
+
+.time-text {
+  color: #0f172a;
+  line-height: 1.4;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.location-text {
+  color: #64748b;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.busBoxSection13 {
+  width: 8%;
+  display: flex;
+  align-items: center;
+}
+
+.duration-badge {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.busBoxSection15 {
+  width: 10%;
+  min-width: 75px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rating-pill {
+  width: fit-content;
+  background-color: #10b981;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.star-icon {
+  font-size: 14px;
+}
+
+.reviews-count-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.people-icon {
+  font-size: 14px;
+}
+
+.busBoxSection16 {
+  width: 12%;
+  min-width: 90px;
+}
+
+.fare-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.currency {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.price-val {
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.deal-tag {
+  color: #dc2626;
+  font-size: 11px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.deal-tag i {
+  font-size: 13px;
+}
+
+.busBoxSection17 {
+  width: 14%;
+  min-width: 110px;
+}
+
+.availability-bar {
+  height: 4px;
+  width: 72px;
+  border-radius: 2px;
+  background-color: #10b981;
+  margin-bottom: 6px;
+}
+
+.seats-avail-row,
+.window-seats-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.avail-num,
+.window-num {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Bus Section 2 */
+.busBoxSection2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.busBoxSection21 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-icon {
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.feature-icon:hover {
+  color: #d84e55;
+}
+
+.feature-icon i {
+  font-size: 18px;
+}
+
+.busBoxSection22 {
+  display: flex;
+  gap: 8px;
+}
+
+.feature-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  background-color: #f1f5f9;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.feature-pill i {
+  font-size: 14px;
+  color: #0284c7;
+}
+
+.busBoxSection3 {
+  margin-top: 4px;
+}
+
+/* Dark Mode Overrides (Task 5) */
+body.dark .bus-box,
+body.dark-theme .bus-box {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark .operator-title,
+body.dark-theme .operator-title,
+body.dark .time-text,
+body.dark-theme .time-text,
+body.dark .price-val,
+body.dark-theme .price-val,
+body.dark .avail-num,
+body.dark-theme .avail-num,
+body.dark .window-num,
+body.dark-theme .window-num {
+  color: #f8fafc !important;
+}
+
+body.dark .bus-type-subtitle,
+body.dark-theme .bus-type-subtitle,
+body.dark .location-text,
+body.dark-theme .location-text,
+body.dark .currency,
+body.dark-theme .currency,
+body.dark .seats-avail-row,
+body.dark-theme .seats-avail-row,
+body.dark .window-seats-row,
+body.dark-theme .window-seats-row,
+body.dark .reviews-count-pill,
+body.dark-theme .reviews-count-pill {
+  color: #94a3b8 !important;
+}
+
+body.dark .duration-badge,
+body.dark-theme .duration-badge,
+body.dark .feature-pill,
+body.dark-theme .feature-pill {
+  background-color: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: #cbd5e1 !important;
+}
+
+body.dark .busBoxSection2,
+body.dark-theme .busBoxSection2 {
+  border-top-color: #334155 !important;
+}
+
+body.dark .feature-icon,
+body.dark-theme .feature-icon {
+  color: #94a3b8 !important;
+}
+
+body.dark .feature-icon:hover,
+body.dark-theme .feature-icon:hover {
+  color: #f87171 !important;
+}

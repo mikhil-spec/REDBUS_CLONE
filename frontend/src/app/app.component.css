@@ -1,0 +1,12 @@
+.app-root-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: inherit;
+  color: inherit;
+}
+
+.app-main-content {
+  flex: 1;
+  width: 100%;
+}
